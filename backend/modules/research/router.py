@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 from modules.research.prompts import get_prompt
-from llm.ollama_client import OllamaClient
+from llm.ollama_client import get_ollama_client
 from llm.streaming import create_sse_stream
 from memory.chroma_client import ChromaManager
 from config.settings import get_settings
@@ -48,7 +48,7 @@ class LitReviewRequest(BaseModel):
 
 async def _process(action: str, params: dict, model_name: Optional[str], stream: bool):
     settings = get_settings()
-    client = OllamaClient()
+    client = get_ollama_client()
     try:
         prompts = get_prompt(action, **params)
     except ValueError as e:

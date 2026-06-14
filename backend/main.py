@@ -5,7 +5,7 @@ FastAPI application that ties together all modules:
 LLM integration, memory/RAG, functional modules, Shivoham engine,
 sovereign dashboard, and governance enforcement.
 
-Launch: uvicorn main:app --reload --port 8000
+Launch: uvicorn main:app --reload --port 8001
 """
 
 import os
@@ -16,7 +16,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from config.governance import GovernanceConfig
+from config.governance import GovernanceConfig, GOVERNANCE, SOVEREIGN_EMAIL
 from config.settings import get_settings
 
 
@@ -26,38 +26,39 @@ from config.settings import get_settings
 async def lifespan(app: FastAPI):
     """Application startup and shutdown lifecycle."""
     settings = get_settings()
-    governance = GovernanceConfig()
-    
+
     # Startup
     print("=" * 60)
-    print(f"  🔱 {governance.SYSTEM_NAME} v{governance.GOVERNANCE_VERSION}")
-    print(f"  Sovereign: {governance.SOVEREIGN_ADMIN_EMAIL}")
+    print(f"  🔱 {GOVERNANCE.system_name} v{GOVERNANCE.version}")
+    print(f"  Sovereign: {GOVERNANCE.sovereign_email}")
     print(f"  Model: {settings.default_model}")
     print(f"  Ollama: {settings.ollama_base_url}")
     print(f"  ChromaDB: {settings.chroma_host}:{settings.chroma_port}")
+    print(f"  Backend: http://{settings.host}:{settings.port}")
     print("=" * 60)
-    
+
     # Create necessary directories
     os.makedirs(settings.upload_dir, exist_ok=True)
     os.makedirs(settings.shivoham_sandbox_dir, exist_ok=True)
-    os.makedirs(os.path.dirname(settings.audit_db_path), exist_ok=True)
-    
+    os.makedirs(os.path.dirname(settings.audit_db_path) or "data/db", exist_ok=True)
+
     # Initialize audit database
-    from sovereign.audit import AuditLogger
-    audit = AuditLogger()
-    await audit.initialize()
-    await audit.log_event(
-        event_type="system_start",
-        user_email=governance.SOVEREIGN_ADMIN_EMAIL,
+    from sovereign.audit import get_audit_logger, AuditAction
+    audit = get_audit_logger()
+    await audit.log(
+        action=AuditAction.SYSTEM_STARTUP,
+        actor_email=GOVERNANCE.sovereign_email,
+        resource="system",
         details={"model": settings.default_model, "timestamp": datetime.utcnow().isoformat()},
     )
-    
+
     yield
-    
+
     # Shutdown
-    await audit.log_event(
-        event_type="system_shutdown",
-        user_email=governance.SOVEREIGN_ADMIN_EMAIL,
+    await audit.log(
+        action=AuditAction.SYSTEM_SHUTDOWN,
+        actor_email=GOVERNANCE.sovereign_email,
+        resource="system",
         details={"timestamp": datetime.utcnow().isoformat()},
     )
     print("🔱 Rudraksh AI shutting down...")
@@ -68,7 +69,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Rudraksh AI",
     description="Sovereign Intelligence Suite — A privacy-first, locally-hosted AI platform",
-    version="1.0.0",
+    version=GOVERNANCE.version,
     lifespan=lifespan,
     docs_url="/docs",
     redoc_url="/redoc",
@@ -88,7 +89,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["X-Request-Id"],
+    expose_headers=["X-Request-Id", "X-Request-Time"],
 )
 
 
@@ -98,33 +99,32 @@ app.add_middleware(
 async def health_check():
     """System health check endpoint used by Docker health checks."""
     settings = get_settings()
-    governance = GovernanceConfig()
-    
+
     # Check Ollama connectivity
     ollama_status = "unknown"
     try:
-        from llm.ollama_client import OllamaClient
-        client = OllamaClient()
-        models = await client.list_models()
-        ollama_status = "connected" if models is not None else "error"
+        from llm.ollama_client import get_ollama_client
+        client = get_ollama_client()
+        ok = await client.health_check()
+        ollama_status = "connected" if ok else "disconnected"
     except Exception:
         ollama_status = "disconnected"
-    
-    # Check ChromaDB connectivity  
+
+    # Check ChromaDB connectivity
     chroma_status = "unknown"
     try:
         from memory.chroma_client import ChromaManager
         chroma = ChromaManager()
         heartbeat = await chroma.heartbeat()
-        chroma_status = "connected" if heartbeat else "error"
+        chroma_status = "connected" if heartbeat else "disconnected"
     except Exception:
         chroma_status = "disconnected"
-    
+
     return {
         "status": "healthy",
-        "system": governance.SYSTEM_NAME,
-        "version": governance.GOVERNANCE_VERSION,
-        "sovereign": governance.SOVEREIGN_ADMIN_EMAIL,
+        "system": GOVERNANCE.system_name,
+        "version": GOVERNANCE.version,
+        "sovereign": GOVERNANCE.sovereign_email,
         "timestamp": datetime.utcnow().isoformat(),
         "services": {
             "ollama": ollama_status,
@@ -177,15 +177,14 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 
 
-# ── Root Redirect ──────────────────────────────────────────
+# ── Root ───────────────────────────────────────────────────
 
 @app.get("/", tags=["System"])
 async def root():
-    """Root endpoint — redirects to API documentation."""
-    governance = GovernanceConfig()
+    """Root endpoint — system info."""
     return {
-        "name": governance.SYSTEM_NAME,
-        "version": governance.GOVERNANCE_VERSION,
+        "name": GOVERNANCE.system_name,
+        "version": GOVERNANCE.version,
         "docs": "/docs",
         "health": "/api/health",
     }

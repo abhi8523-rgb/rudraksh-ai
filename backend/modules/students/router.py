@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 from modules.students.prompts import get_prompt
-from llm.ollama_client import OllamaClient
+from llm.ollama_client import get_ollama_client
 from llm.streaming import create_sse_stream
 from config.settings import get_settings
 
@@ -57,7 +57,7 @@ class SummarizeRequest(BaseModel):
 
 async def _process(action: str, params: dict, model_name: Optional[str], stream: bool):
     settings = get_settings()
-    client = OllamaClient()
+    client = get_ollama_client()
     try:
         prompts = get_prompt(action, **params)
     except ValueError as e:

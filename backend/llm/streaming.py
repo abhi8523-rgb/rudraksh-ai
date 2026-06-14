@@ -147,3 +147,53 @@ def stream_sse_response(
             "Connection": "keep-alive",
         },
     )
+
+
+def create_sse_stream(
+    token_iterator: AsyncIterator[dict[str, Any]],
+) -> StreamingResponse:
+    """
+    Build an SSE ``StreamingResponse`` from an async token iterator.
+
+    Simplified version for module routers that don't have access to
+    the FastAPI ``Request`` object. Does not check for client disconnect.
+
+    Each Ollama chunk is expected to have ``message.content`` or ``response``.
+    """
+
+    async def _generate() -> AsyncIterator[str]:
+        try:
+            async for chunk in token_iterator:
+                content = ""
+                if "message" in chunk:
+                    content = chunk["message"].get("content", "")
+                elif "response" in chunk:
+                    content = chunk.get("response", "")
+
+                done = chunk.get("done", False)
+
+                event_data = {"content": content, "done": done}
+
+                if done:
+                    event_data["eval_count"] = chunk.get("eval_count")
+                    event_data["total_duration"] = chunk.get("total_duration")
+
+                yield f"data: {json.dumps(event_data)}\n\n"
+
+                if done:
+                    break
+        except Exception as exc:
+            logger.error("Stream error: %s", exc)
+            yield f"data: {json.dumps({'error': str(exc), 'done': True})}\n\n"
+        finally:
+            yield "data: [DONE]\n\n"
+
+    return StreamingResponse(
+        content=_generate(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+            "Connection": "keep-alive",
+        },
+    )

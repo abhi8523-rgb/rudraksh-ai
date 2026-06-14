@@ -1,8 +1,12 @@
 import { API_BASE_URL } from './constants';
-import type { StreamEvent } from '@/types';
 
 /* ════════════════════════════════════════════════════════════════
-   Rudraksh AI — SSE Streaming Client
+   Rudraksh AI — SSE Streaming Client (FIXED PROTOCOL)
+   
+   Handles BOTH formats:
+   - Backend sends: { content: "hello", done: false }
+   - Also supports: { type: "token", content: "hello" }
+   
    POST-based SSE using fetch + ReadableStream + AbortController
    ════════════════════════════════════════════════════════════════ */
 
@@ -17,7 +21,8 @@ export interface StreamOptions {
 }
 
 export async function streamResponse(options: StreamOptions): Promise<void> {
-  const { endpoint, body, onToken, onDone, onError, onMetadata, signal } = options;
+  const { endpoint, body, onToken, onDone, onError, onMetadata, signal } =
+    options;
 
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
@@ -40,7 +45,9 @@ export async function streamResponse(options: StreamOptions): Promise<void> {
     });
 
     if (!response.ok) {
-      const errBody = await response.json().catch(() => ({ detail: response.statusText }));
+      const errBody = await response
+        .json()
+        .catch(() => ({ detail: response.statusText }));
       onError?.(errBody.detail || `HTTP ${response.status}`);
       return;
     }
@@ -75,38 +82,52 @@ export async function streamResponse(options: StreamOptions): Promise<void> {
           }
 
           try {
-            const event: StreamEvent = JSON.parse(data);
-            switch (event.type) {
-              case 'token':
-                if (event.content) {
-                  fullText += event.content;
-                  onToken(event.content);
-                }
-                break;
-              case 'done':
-                onDone?.(fullText);
-                return;
-              case 'error':
-                onError?.(event.content || 'Stream error');
-                return;
-              case 'metadata':
-                if (event.metadata) onMetadata?.(event.metadata);
-                break;
+            const event = JSON.parse(data);
+
+            // Handle error events from backend
+            if (event.error) {
+              onError?.(event.error);
+              return;
+            }
+
+            // Backend sends { content: "...", done: true/false }
+            // Also handle { type: "token", content: "..." }
+            const content = event.content || '';
+            const isDone = event.done === true;
+
+            if (content) {
+              fullText += content;
+              onToken(content);
+            }
+
+            // Pass metadata (token counts, etc.) on final chunk
+            if (isDone) {
+              const metadata: Record<string, unknown> = {};
+              if (event.eval_count) metadata.eval_count = event.eval_count;
+              if (event.total_duration) metadata.total_duration = event.total_duration;
+              if (event.usage) metadata.usage = event.usage;
+              if (Object.keys(metadata).length > 0) {
+                onMetadata?.(metadata);
+              }
+              onDone?.(fullText);
+              return;
             }
           } catch {
-            // Raw text token (non-JSON SSE)
-            fullText += data;
-            onToken(data);
+            // Non-JSON SSE data — treat as raw text token
+            if (data.trim()) {
+              fullText += data;
+              onToken(data);
+            }
           }
         }
       }
     }
 
-    // Stream ended without explicit [DONE]
+    // Stream ended without explicit [DONE] or done:true
     onDone?.(fullText);
   } catch (err) {
     if ((err as Error).name === 'AbortError') {
-      onDone?.('' );
+      onDone?.(fullText || '');
       return;
     }
     onError?.((err as Error).message);

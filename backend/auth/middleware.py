@@ -13,6 +13,7 @@ import time
 from typing import Sequence
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 
 from auth.rbac import (
@@ -100,6 +101,24 @@ class AuthMiddleware(BaseHTTPMiddleware):
 # ──────────────────────────────────────────────────────────────────────
 
 router = APIRouter(prefix="/api/v1/auth", tags=["Authentication"])
+
+
+async def get_current_user_optional(
+    request: Request,
+    credentials: HTTPAuthorizationCredentials | None = Depends(
+        HTTPBearer(auto_error=False)
+    ),
+) -> UserIdentity | None:
+    """
+    Like ``get_current_user`` but returns None when no token is present.
+    Useful for module endpoints that work both authenticated and public.
+    """
+    if credentials is None:
+        return None
+    try:
+        return await get_current_user(request, credentials)
+    except HTTPException:
+        return None
 
 
 @router.post(

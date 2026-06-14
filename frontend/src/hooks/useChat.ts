@@ -1,11 +1,16 @@
 'use client';
 
 import { useState, useCallback, useRef } from 'react';
-import type { Message, Conversation } from '@/types';
+import type { Message, Conversation, ModuleType } from '@/types';
 import { streamResponse, createAbortController } from '@/lib/streaming';
 
 /* ════════════════════════════════════════════════════════════════
-   useChat — Chat state management hook
+   useChat — Chat state management hook (FIXED API)
+   
+   Supports two calling styles:
+   1. Default chat:  useChat()
+   2. Module-specific: useChat('/api/v1/coders/generate')
+      or useChat({ endpoint: '...', model: '...' })
    ════════════════════════════════════════════════════════════════ */
 
 interface UseChatOptions {
@@ -15,9 +20,15 @@ interface UseChatOptions {
   systemPrompt?: string;
 }
 
-export function useChat(options: UseChatOptions = {}) {
+export function useChat(optionsOrEndpoint?: UseChatOptions | string) {
+  // Support both useChat('/api/coders') and useChat({ endpoint: '...' })
+  const options: UseChatOptions =
+    typeof optionsOrEndpoint === 'string'
+      ? { endpoint: optionsOrEndpoint }
+      : optionsOrEndpoint || {};
+
   const {
-    endpoint = '/api/chat/stream',
+    endpoint = '/api/v1/llm/chat',
     model = 'deepseek-r1:14b',
     module = 'chat',
     systemPrompt,
@@ -29,10 +40,11 @@ export function useChat(options: UseChatOptions = {}) {
   const [currentModel, setCurrentModel] = useState(model);
   const abortRef = useRef<AbortController | null>(null);
 
-  const generateId = () => `msg_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+  const generateId = () =>
+    `msg_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 
   const sendMessage = useCallback(
-    async (content: string) => {
+    async (content: string, extraBody?: Record<string, unknown>) => {
       if (!content.trim() || isStreaming) return;
 
       setError(null);
@@ -60,16 +72,23 @@ export function useChat(options: UseChatOptions = {}) {
 
       const allMessages = [...messages, userMessage];
       const chatHistory = systemPrompt
-        ? [{ role: 'system' as const, content: systemPrompt }, ...allMessages]
+        ? [
+            { role: 'system' as const, content: systemPrompt },
+            ...allMessages,
+          ]
         : allMessages;
 
       await streamResponse({
         endpoint,
         body: {
-          messages: chatHistory.map((m) => ({ role: m.role, content: m.content })),
+          messages: chatHistory.map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
           model: currentModel,
           module,
           stream: true,
+          ...extraBody,
         },
         onToken: (token) => {
           setMessages((prev) => {

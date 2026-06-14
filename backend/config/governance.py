@@ -162,10 +162,10 @@ class GovernanceConfig:
         except ValueError:
             return len(ROLE_HIERARCHY)  # unknown roles rank lowest
 
-    @classmethod
-    def role_at_least(cls, user_role: Role, required_role: Role) -> bool:
+    @staticmethod
+    def role_at_least(user_role: Role, required_role: Role) -> bool:
         """Return True if *user_role* is equal to or higher than *required_role*."""
-        return cls.role_rank(cls, user_role) <= cls.role_rank(cls, required_role)
+        return GovernanceConfig.role_rank(user_role) <= GovernanceConfig.role_rank(required_role)
 
 
 # ──────────────────────────────────────────────────────────────────────

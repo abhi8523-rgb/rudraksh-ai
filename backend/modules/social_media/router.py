@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 from modules.social_media.prompts import get_prompt
-from llm.ollama_client import OllamaClient
+from llm.ollama_client import get_ollama_client
 from llm.streaming import create_sse_stream
 from config.settings import get_settings
 
@@ -58,7 +58,7 @@ class EngagementRequest(BaseModel):
 
 async def _process_request(action: str, params: dict, model: Optional[str], stream: bool):
     settings = get_settings()
-    client = OllamaClient()
+    client = get_ollama_client()
     try:
         prompts = get_prompt(action, **params)
     except ValueError as e:

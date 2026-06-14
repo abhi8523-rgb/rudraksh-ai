@@ -10,7 +10,7 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 from modules.coders.prompts import get_prompt
-from llm.ollama_client import OllamaClient
+from llm.ollama_client import get_ollama_client
 from llm.streaming import create_sse_stream
 from auth.middleware import get_current_user_optional
 from config.settings import get_settings
@@ -68,7 +68,7 @@ async def _process_code_request(
 ):
     """Process a code module request with optional streaming."""
     settings = get_settings()
-    client = OllamaClient()
+    client = get_ollama_client()
     
     try:
         prompts = get_prompt(action, **params)

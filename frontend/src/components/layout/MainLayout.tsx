@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
+import ModuleNav from './ModuleNav';
 
 /* ════════════════════════════════════════════════════════════════
-   MainLayout — Wrapper combining sidebar + header + content
+   MainLayout — Wrapper combining sidebar + header + module nav + content
    ════════════════════════════════════════════════════════════════ */
 
 interface MainLayoutProps {
@@ -23,6 +24,10 @@ export default function MainLayout({ children }: MainLayoutProps) {
       {/* Main Content Area */}
       <div className="pl-[72px] lg:pl-[260px] transition-all duration-300">
         <Header currentModel={currentModel} onModelChange={setCurrentModel} />
+        
+        {/* Segmented Module Navigation */}
+        <ModuleNav />
+
         <main className="relative min-h-[calc(100vh-64px)]">
           {children}
         </main>

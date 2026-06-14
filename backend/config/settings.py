@@ -39,7 +39,7 @@ class Settings(BaseSettings):
 
     # ── Server ───────────────────────────────────────────────────────
     host: str = "0.0.0.0"
-    port: int = 8000
+    port: int = 8001
 
     # ── CORS ─────────────────────────────────────────────────────────
     cors_origins: list[str] = Field(
@@ -64,7 +64,7 @@ class Settings(BaseSettings):
 
     # ── ChromaDB ─────────────────────────────────────────────────────
     chroma_host: str = "localhost"
-    chroma_port: int = 8000
+    chroma_port: int = 8100
     chroma_default_collection: str = "rudraksh_memory"
 
     # ── JWT / Auth ───────────────────────────────────────────────────
@@ -83,6 +83,7 @@ class Settings(BaseSettings):
     # ── Shivoham Engine ──────────────────────────────────────────────
     shivoham_max_iterations: int = 10
     shivoham_sandbox_timeout: int = 30  # seconds per tool call
+    shivoham_sandbox_dir: str = "data/sandbox"
 
     # ── Derived helpers ──────────────────────────────────────────────
 
@@ -104,6 +105,23 @@ class Settings(BaseSettings):
     def max_upload_bytes(self) -> int:
         """Max upload size in bytes."""
         return self.max_upload_size_mb * 1024 * 1024
+
+    # ── Compatibility aliases (used by module routers) ───────────
+
+    @property
+    def default_model(self) -> str:
+        """Alias for ollama_default_model."""
+        return self.ollama_default_model
+
+    @property
+    def shivoham_task_timeout(self) -> int:
+        """Alias for shivoham_sandbox_timeout."""
+        return self.shivoham_sandbox_timeout
+
+    @property
+    def audit_db_path(self) -> str:
+        """Alias for sqlite_db_path."""
+        return self.sqlite_db_path
 
 
 @lru_cache(maxsize=1)
