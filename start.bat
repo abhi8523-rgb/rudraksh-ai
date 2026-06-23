@@ -1,17 +1,16 @@
 @echo off
-title 🔱 Neel AI — Startup
+title Neel AI - Startup
 color 0A
 echo.
-echo  ╔══════════════════════════════════════════════╗
-echo  ║           🔱 NEEL AI — STARTUP               ║
-echo  ║       Sovereign Intelligence Suite           ║
-echo  ╚══════════════════════════════════════════════╝
+echo  ========================================
+echo       NEEL AI - Sovereign Intelligence
+echo  ========================================
 echo.
 
 :: Check if Ollama is installed
 where ollama >nul 2>&1
 if %errorlevel% neq 0 (
-    echo [❌] Ollama not found! Install from: https://ollama.com
+    echo [X] Ollama not found! Install from: https://ollama.com
     echo     After installing, run this script again.
     pause
     exit /b 1
@@ -23,19 +22,19 @@ tasklist /FI "IMAGENAME eq ollama.exe" 2>NUL | find /I /N "ollama.exe">NUL
 if %errorlevel% neq 0 (
     start /MIN ollama serve
     timeout /t 3 >nul
-    echo       ✅ Ollama started
+    echo       OK - Ollama started
 ) else (
-    echo       ✅ Ollama already running
+    echo       OK - Ollama already running
 )
 
 :: Pull default model if not present
 echo [2/5] Checking for AI models...
 ollama list | find "llama3.2:3b" >nul 2>&1
 if %errorlevel% neq 0 (
-    echo       Pulling llama3.2:3b (this may take a few minutes)...
+    echo       Pulling llama3.2:3b - this may take a few minutes...
     ollama pull llama3.2:3b
 ) else (
-    echo       ✅ llama3.2:3b ready
+    echo       OK - llama3.2:3b ready
 )
 
 :: Pull embedding model
@@ -44,47 +43,51 @@ if %errorlevel% neq 0 (
     echo       Pulling nomic-embed-text for RAG...
     ollama pull nomic-embed-text
 ) else (
-    echo       ✅ nomic-embed-text ready
+    echo       OK - nomic-embed-text ready
 )
+
+:: Store the root directory
+set "NEEL_ROOT=%~dp0"
 
 :: Install backend dependencies
 echo [3/5] Setting up backend...
-cd /d "%~dp0backend"
+cd /d "%NEEL_ROOT%backend"
 if not exist "venv" (
     python -m venv venv
     echo       Created virtual environment
 )
 call venv\Scripts\activate.bat
 pip install -r requirements.txt -q
-echo       ✅ Backend ready
+echo       OK - Backend dependencies installed
 
-:: Start backend
+:: Start backend in a new window
 echo [4/5] Starting backend server on port 8001...
-start /MIN cmd /c "cd /d "%~dp0backend" && venv\Scripts\activate.bat && uvicorn main:app --host 0.0.0.0 --port 8001 --reload"
-timeout /t 3 >nul
-echo       ✅ Backend running at http://localhost:8001
+start "Neel-Backend" /MIN cmd /k "cd /d %NEEL_ROOT%backend && call venv\Scripts\activate.bat && uvicorn main:app --host 0.0.0.0 --port 8001 --reload"
+timeout /t 4 >nul
+echo       OK - Backend running at http://localhost:8001
 
 :: Start frontend
 echo [5/5] Starting frontend...
-cd /d "%~dp0frontend"
+cd /d "%NEEL_ROOT%frontend"
 if not exist "node_modules" (
-    echo       Installing dependencies (first time only)...
+    echo       Installing dependencies - first time only, please wait...
     call npm install
 )
-start /MIN cmd /c "cd /d "%~dp0frontend" && npm run dev"
-timeout /t 5 >nul
-echo       ✅ Frontend running at http://localhost:3000
+start "Neel-Frontend" /MIN cmd /k "cd /d %NEEL_ROOT%frontend && npm run dev"
+timeout /t 6 >nul
+echo       OK - Frontend running at http://localhost:3000
 
 echo.
-echo  ╔══════════════════════════════════════════════╗
-echo  ║     🔱 NEEL AI IS NOW RUNNING!               ║
-echo  ║                                              ║
-echo  ║     Frontend: http://localhost:3000           ║
-echo  ║     Backend:  http://localhost:8001           ║
-echo  ║     API Docs: http://localhost:8001/docs      ║
-echo  ║                                              ║
-echo  ║     Sovereign: abhi8523@gmail.com             ║
-echo  ╚══════════════════════════════════════════════╝
+echo  ========================================
+echo      NEEL AI IS NOW RUNNING!
+echo.
+echo      Frontend: http://localhost:3000
+echo      Backend:  http://localhost:8001
+echo      API Docs: http://localhost:8001/docs
+echo.
+echo      Login:    abhi8523@gmail.com
+echo      Password: neel2026
+echo  ========================================
 echo.
 echo Opening Neel AI in your browser...
 timeout /t 2 >nul
@@ -94,7 +97,8 @@ echo.
 echo Press any key to STOP all services...
 pause >nul
 
-:: Cleanup
+:: Cleanup - kill the named windows
+taskkill /F /FI "WINDOWTITLE eq Neel-Backend*" >nul 2>&1
+taskkill /F /FI "WINDOWTITLE eq Neel-Frontend*" >nul 2>&1
 taskkill /F /IM "node.exe" >nul 2>&1
-taskkill /F /FI "WINDOWTITLE eq uvicorn*" >nul 2>&1
-echo Services stopped. Goodbye! 🔱
+echo Services stopped. Goodbye!
