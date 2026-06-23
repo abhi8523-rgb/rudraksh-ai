@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Memory Package.
+Neel AI — Memory Package.
 
 Provides ChromaDB-backed vector memory for RAG:
   - ChromaDB client (HttpClient mode)

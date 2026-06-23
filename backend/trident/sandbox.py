@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Shivoham Security Sandbox
+Neel AI — Trident Security Sandbox
 ========================================
 Restricts file system access, command execution, and resource usage
 for the autonomous execution engine to prevent damage.
@@ -18,7 +18,7 @@ class SandboxViolation(Exception):
 
 
 class Sandbox:
-    """Security sandbox for Shivoham's autonomous execution.
+    """Security sandbox for Trident's autonomous execution.
     
     Enforces:
     - File system access restricted to sandbox directory
@@ -45,7 +45,7 @@ class Sandbox:
 
     def __init__(self, sandbox_dir: Optional[str] = None):
         settings = get_settings()
-        self._sandbox_root = Path(sandbox_dir or settings.shivoham_sandbox_dir).resolve()
+        self._sandbox_root = Path(sandbox_dir or settings.Trident_sandbox_dir).resolve()
         self._sandbox_root.mkdir(parents=True, exist_ok=True)
         self._max_file_size_mb = 50
         self._max_output_length = 100_000  # characters

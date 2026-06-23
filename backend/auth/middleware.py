@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Auth Middleware.
+Neel AI — Auth Middleware.
 
 Provides an ASGI middleware that performs lightweight JWT validation
 on every request (except explicitly excluded paths).
@@ -37,7 +37,7 @@ from auth.schemas import (
 from config.governance import Role, SOVEREIGN_EMAIL
 from config.settings import get_settings
 
-logger = logging.getLogger("rudraksh.auth.middleware")
+logger = logging.getLogger("neel.auth.middleware")
 
 # ──────────────────────────────────────────────────────────────────────
 #  ASGI Middleware — lightweight request logging & timing

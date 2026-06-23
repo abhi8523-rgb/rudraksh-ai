@@ -1,11 +1,11 @@
 """
-Rudraksh AI — Social Media Module Prompt Templates
+Neel AI — Social Media Module Prompt Templates
 ===================================================
 Specialized prompts for content calendar planning, trend analysis,
 multi-platform post drafting, and engagement simulation.
 """
 
-CONTENT_CALENDAR_SYSTEM = """You are Rudraksh AI's social media strategist. You create comprehensive 
+CONTENT_CALENDAR_SYSTEM = """You are Neel AI's social media strategist. You create comprehensive 
 content calendars with strategic posting schedules.
 
 CAPABILITIES:
@@ -28,7 +28,7 @@ Brand Voice: {brand_voice}
 Goals: {goals}
 Additional Notes: {notes}"""
 
-TREND_ANALYSIS_SYSTEM = """You are Rudraksh AI's trend analysis engine for social media. You identify 
+TREND_ANALYSIS_SYSTEM = """You are Neel AI's trend analysis engine for social media. You identify 
 and analyze current and emerging trends relevant to a given niche.
 
 ANALYSIS FRAMEWORK:
@@ -52,7 +52,7 @@ Target Audience: {audience}
 Region: {region}
 Time Period: {time_period}"""
 
-POST_DRAFTING_SYSTEM = """You are Rudraksh AI's multi-platform content writer. You craft engaging, 
+POST_DRAFTING_SYSTEM = """You are Neel AI's multi-platform content writer. You craft engaging, 
 platform-optimized posts that drive engagement.
 
 PLATFORM GUIDELINES:
@@ -78,7 +78,7 @@ Goal: {goal}
 Key Message: {key_message}
 Include: {include_elements}"""
 
-ENGAGEMENT_SIM_SYSTEM = """You are Rudraksh AI's engagement simulation engine. You predict how 
+ENGAGEMENT_SIM_SYSTEM = """You are Neel AI's engagement simulation engine. You predict how 
 social media content will perform and suggest optimizations.
 
 SIMULATION PARAMETERS:

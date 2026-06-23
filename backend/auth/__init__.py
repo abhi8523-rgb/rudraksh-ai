@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Authentication & Authorisation Package.
+Neel AI — Authentication & Authorisation Package.
 
 Provides JWT-based authentication, RBAC middleware, and Pydantic schemas
 for user identity management.

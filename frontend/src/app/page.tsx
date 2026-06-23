@@ -55,7 +55,7 @@ export default function ChatPage() {
             </h1>
             <p className="text-gray-500 max-w-md">
               Your sovereign intelligence suite. Ask anything, generate code, analyze data, 
-              or let Shivoham execute complex multi-step tasks autonomously.
+              or let Trident execute complex multi-step tasks autonomously.
             </p>
             <div className="grid grid-cols-2 gap-3 mt-8 max-w-lg w-full">
               {[
@@ -97,7 +97,7 @@ export default function ChatPage() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Message Rudraksh AI..."
+              placeholder="Message Neel AI..."
               rows={1}
               className="flex-1 bg-transparent px-4 py-3 text-sm text-white placeholder-gray-600 resize-none outline-none max-h-40 scrollbar-thin"
               style={{ minHeight: '44px' }}
@@ -126,7 +126,7 @@ export default function ChatPage() {
             </div>
           </div>
           <p className="text-center text-[11px] text-gray-600 mt-2">
-            Rudraksh AI runs locally — your data never leaves your machine
+            Neel AI runs locally — your data never leaves your machine
           </p>
         </div>
       </div>

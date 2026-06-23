@@ -1,5 +1,5 @@
 """
-Rudraksh AI — ChromaDB Client.
+Neel AI — ChromaDB Client.
 
 Manages connections to ChromaDB in ``HttpClient`` mode and provides
 high-level operations for collection management, document storage,
@@ -17,7 +17,7 @@ from chromadb.config import Settings as ChromaSettings
 
 from config.settings import Settings, get_settings
 
-logger = logging.getLogger("rudraksh.memory.chroma")
+logger = logging.getLogger("neel.memory.chroma")
 
 
 class ChromaMemoryClient:

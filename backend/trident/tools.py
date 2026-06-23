@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Shivoham Tool Definitions
+Neel AI — Trident Tool Definitions
 ========================================
 Sandboxed tools accessible by the autonomous execution engine:
 terminal, file system, web, LLM, and memory.
@@ -10,7 +10,7 @@ import subprocess
 from typing import Optional
 from datetime import datetime
 
-from shivoham.sandbox import Sandbox, SandboxViolation
+from trident.sandbox import Sandbox, SandboxViolation
 from llm.ollama_client import OllamaClient
 from memory.chroma_client import ChromaManager
 from config.settings import get_settings
@@ -35,8 +35,8 @@ class ToolResult:
         }
 
 
-class ShivohamTools:
-    """Collection of sandboxed tools for the Shivoham execution engine."""
+class TridentTools:
+    """Collection of sandboxed tools for the Trident execution engine."""
 
     def __init__(self, sandbox: Optional[Sandbox] = None):
         self._sandbox = sandbox or Sandbox()
@@ -123,7 +123,7 @@ class ShivohamTools:
         """Execute a shell command in the sandbox."""
         validated_cmd = self._sandbox.validate_command(command)
         
-        timeout = min(int(kwargs.get("timeout", 30)), self._settings.shivoham_task_timeout)
+        timeout = min(int(kwargs.get("timeout", 30)), self._settings.Trident_task_timeout)
 
         try:
             process = await asyncio.create_subprocess_shell(
@@ -190,7 +190,7 @@ class ShivohamTools:
             await chroma.add_documents(
                 collection_name=collection,
                 documents=[content],
-                metadatas=[metadata or {"source": "shivoham"}],
+                metadatas=[metadata or {"source": "Trident"}],
                 ids=[doc_id],
             )
             return f"Stored document with ID: {doc_id}"

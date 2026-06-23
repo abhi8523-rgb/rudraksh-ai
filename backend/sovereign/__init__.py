@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Sovereign Package.
+Neel AI — Sovereign Package.
 
 System administration, audit logging, metrics, and governance
 enforcement endpoints accessible only to the Sovereign Administrator

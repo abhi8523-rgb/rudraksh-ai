@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Governance Configuration.
+Neel AI — Governance Configuration.
 
 IMMUTABLE sovereign administrator configuration.
 This file defines the absolute, hardcoded governance hierarchy.
@@ -64,7 +64,7 @@ class Permission(StrEnum):
     # Admin+
     MANAGE_MODELS = "manage_models"
     MANAGE_MEMORY = "manage_memory"
-    EXECUTE_SHIVOHAM = "execute_shivoham"
+    EXECUTE_TRIDENT = "execute_trident"
 
     # Operator+
     INGEST_DOCUMENTS = "ingest_documents"
@@ -105,7 +105,7 @@ _ROLE_PERMISSIONS: Final[dict[Role, FrozenSet[Permission]]] = {
         Permission.USE_MODULES,
         Permission.MANAGE_MODELS,
         Permission.MANAGE_MEMORY,
-        Permission.EXECUTE_SHIVOHAM,
+        Permission.EXECUTE_TRIDENT,
     }),
     Role.SOVEREIGN: frozenset(Permission),  # ALL permissions
 }
@@ -114,7 +114,7 @@ _ROLE_PERMISSIONS: Final[dict[Role, FrozenSet[Permission]]] = {
 @dataclass(frozen=True, slots=True)
 class GovernanceConfig:
     """
-    Immutable governance configuration for the Rudraksh AI system.
+    Immutable governance configuration for the Neel AI system.
 
     This is a frozen dataclass — once created, it cannot be mutated.
     The ``sovereign_email`` field is always hardcoded to the canonical value
@@ -126,7 +126,7 @@ class GovernanceConfig:
     role_hierarchy: tuple[Role, ...] = field(
         default_factory=lambda: tuple(ROLE_HIERARCHY)
     )
-    system_name: str = "Rudraksh AI"
+    system_name: str = "Neel AI"
     version: str = "1.0.0"
 
     def __post_init__(self) -> None:

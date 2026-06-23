@@ -1,7 +1,7 @@
 import { API_BASE_URL } from './constants';
 
 /* ════════════════════════════════════════════════════════════════
-   Rudraksh AI — SSE Streaming Client (FIXED PROTOCOL)
+   Neel AI — SSE Streaming Client (FIXED PROTOCOL)
    
    Handles BOTH formats:
    - Backend sends: { content: "hello", done: false }
@@ -30,7 +30,7 @@ export async function streamResponse(options: StreamOptions): Promise<void> {
   };
 
   if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('rudraksh_token');
+    const token = localStorage.getItem('neel_token');
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }

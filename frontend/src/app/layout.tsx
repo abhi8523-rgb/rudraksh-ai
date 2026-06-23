@@ -8,9 +8,9 @@ const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jet
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 export const metadata: Metadata = {
-  title: "Rudraksh AI — Sovereign Intelligence Suite",
+  title: "Neel AI — Sovereign Intelligence Suite",
   description: "A privacy-first, locally-hosted AI platform with autonomous execution, modular industry verticals, and hardcoded governance.",
-  keywords: ["AI", "LLM", "local", "privacy", "Ollama", "autonomous", "Rudraksh"],
+  keywords: ["AI", "LLM", "local", "privacy", "Ollama", "autonomous", "Neel"],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

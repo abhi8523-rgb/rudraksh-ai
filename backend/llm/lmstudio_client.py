@@ -1,5 +1,5 @@
 """
-Rudraksh AI — LM Studio Async Client.
+Neel AI — LM Studio Async Client.
 
 Communicates with LM Studio via its OpenAI-compatible REST API
 (default: ``http://localhost:1234/v1``).
@@ -18,7 +18,7 @@ import httpx
 
 from config.settings import Settings, get_settings
 
-logger = logging.getLogger("rudraksh.llm.lmstudio")
+logger = logging.getLogger("neel.llm.lmstudio")
 
 
 class LMStudioClient:

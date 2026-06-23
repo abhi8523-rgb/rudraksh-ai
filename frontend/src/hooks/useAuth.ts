@@ -17,15 +17,15 @@ export function useAuth() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('rudraksh_token');
-    const expiresAt = localStorage.getItem('rudraksh_token_expires');
+    const token = localStorage.getItem('neel_token');
+    const expiresAt = localStorage.getItem('neel_token_expires');
     if (token && expiresAt) {
       const expiry = parseInt(expiresAt, 10);
       if (Date.now() < expiry) {
         setAuth({ isAuthenticated: true, token, expiresAt: expiry });
       } else {
-        localStorage.removeItem('rudraksh_token');
-        localStorage.removeItem('rudraksh_token_expires');
+        localStorage.removeItem('neel_token');
+        localStorage.removeItem('neel_token_expires');
       }
     }
     setIsLoading(false);
@@ -39,8 +39,8 @@ export function useAuth() {
       });
       if (res.success && res.data) {
         const { token, expires_at } = res.data;
-        localStorage.setItem('rudraksh_token', token);
-        localStorage.setItem('rudraksh_token_expires', expires_at.toString());
+        localStorage.setItem('neel_token', token);
+        localStorage.setItem('neel_token_expires', expires_at.toString());
         setAuth({ isAuthenticated: true, token, expiresAt: expires_at });
         setIsLoading(false);
         return true;
@@ -54,8 +54,8 @@ export function useAuth() {
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem('rudraksh_token');
-    localStorage.removeItem('rudraksh_token_expires');
+    localStorage.removeItem('neel_token');
+    localStorage.removeItem('neel_token_expires');
     setAuth({ isAuthenticated: false, token: null, expiresAt: null });
   }, []);
 

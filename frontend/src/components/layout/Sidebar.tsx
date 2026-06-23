@@ -34,7 +34,7 @@ export default function Sidebar() {
           <div className="relative flex-shrink-0 w-9 h-9">
             <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 animate-glow-pulse" />
             <div className="relative flex items-center justify-center w-full h-full rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600">
-              <span className="text-lg font-bold text-white">R</span>
+              <span className="text-lg font-bold text-white">N</span>
             </div>
           </div>
           <AnimatePresence>

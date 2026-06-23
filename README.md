@@ -1,108 +1,98 @@
-<div align="center">
+# 🔱 Neel AI — Sovereign Intelligence Suite
 
-# 🔱 RUDRAKSH AI
+> A privacy-first, locally-hosted AI platform with autonomous execution, modular industry verticals, and hardcoded governance.
 
-### Sovereign Intelligence Suite
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
+[![Next.js 15](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org)
 
-*A locally-hosted, privacy-first, modular AI platform*
-*with hardcoded governance and autonomous execution capabilities*
+## 🌟 What is Neel AI?
 
-[![Built with FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
-[![Next.js](https://img.shields.io/badge/Frontend-Next.js-000000?style=for-the-badge&logo=next.js)](https://nextjs.org)
-[![Ollama](https://img.shields.io/badge/LLM-Ollama-white?style=for-the-badge)](https://ollama.ai)
-[![Docker](https://img.shields.io/badge/Deploy-Docker-2496ED?style=for-the-badge&logo=docker)](https://docker.com)
+Neel AI is a **complete AI platform** that runs entirely on your local machine. No cloud, no API fees, no data leaving your device. It combines:
 
-</div>
+- 🧠 **Multiple Local LLMs** via Ollama (Llama, DeepSeek, Mistral, CodeLlama)
+- 📚 **RAG Pipeline** via ChromaDB (upload documents, ask questions)
+- 🔱 **Trident Engine** — autonomous task execution with DAG planning
+- 🔐 **Sovereign Governance** — hardcoded admin control (abhi8523@gmail.com)
+- 🎨 **8 Specialized Modules** — each with purpose-built AI tools
 
----
-
-## 🏗️ Architecture
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                    RUDRAKSH AI                          │
-│                                                         │
-│  ┌──────────┐  ┌──────────────┐  ┌──────────────────┐  │
-│  │ Next.js  │  │   FastAPI    │  │     Ollama       │  │
-│  │ Frontend │──│   Backend    │──│   (Local LLM)    │  │
-│  │ :3000    │  │   :8001      │  │   :11434         │  │
-│  └──────────┘  └──────┬───────┘  └──────────────────┘  │
-│                       │                                  │
-│               ┌───────┴────────┐                        │
-│               │   ChromaDB     │                        │
-│               │ (Vector Store) │                        │
-│               │   :8000        │                        │
-│               └────────────────┘                        │
-└─────────────────────────────────────────────────────────┘
-```
-
-## ⚡ Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
-- 16GB+ RAM recommended
-- 10GB+ free disk space (for models)
+- [Ollama](https://ollama.com) — Local LLM server
+- [Python 3.11+](https://python.org) — Backend
+- [Node.js 20+](https://nodejs.org) — Frontend
 
-### Launch (One Command)
-
-```bash
-# Clone or navigate to the project directory
-cd "Rudraksh AI"
-
-# Copy environment template
-cp .env.example .env
-
-# Launch all services
-docker compose up --build -d
-
-# Pull a model (first time only)
-docker exec -it rudraksh-ollama ollama pull llama3.2:3b
+### One-Click Launch (Windows)
+```
+Double-click: start.bat
 ```
 
-### Access
-| Service | URL |
-|---------|-----|
-| 🖥️ Dashboard | [http://localhost:3000](http://localhost:3000) |
-| ⚙️ API Docs | [http://localhost:8001/docs](http://localhost:8001/docs) |
-| 🧠 Ollama | [http://localhost:11434](http://localhost:11434) |
-| 📦 ChromaDB | [http://localhost:8000](http://localhost:8000) |
-
-## 🔐 Governance
-
-Rudraksh AI has a hardcoded Sovereign Administrator system. The system owner (`abhi8523@gmail.com`) has immutable, lifetime control including:
-
-- Full system administration
-- Audit log access
-- Model management
-- User management
-- All metric dashboards
-
-## 🧩 Modules
-
-| Module | Description |
-|--------|-------------|
-| 💬 **Chat** | General-purpose AI chat with streaming responses |
-| 👨‍💻 **Coders** | Code generation, refactoring, security scanning |
-| 📱 **Social Media** | Content calendars, trend analysis, multi-platform drafts |
-| 📊 **Marketing** | Campaign strategy, SEO analysis, customer personas |
-| 🎓 **Students** | Study guides, concept explanation, citation tools |
-| 🔬 **Research** | Deep RAG queries, hypothesis generation, literature reviews |
-| ⚡ **Shivoham** | Autonomous task execution with DAG planning |
-
-## 🛠️ Development
-
+### Manual Setup
 ```bash
-# Backend (standalone)
-cd backend
-pip install -r requirements.txt
-uvicorn main:app --reload --port 8000
+# Terminal 1: Ollama
+ollama serve
+ollama pull llama3.2:3b
+ollama pull nomic-embed-text
 
-# Frontend (standalone)
+# Terminal 2: Backend
+cd backend
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+
+# Terminal 3: Frontend
 cd frontend
 npm install
 npm run dev
 ```
 
+## 📱 Modules
+
+| Module | Icon | Description |
+|--------|------|-------------|
+| **Chat** | 💬 | Intelligent conversations with any loaded model |
+| **Coders** | ⚡ | Code generation, refactoring, documentation, security |
+| **Social Media** | 📱 | Content planning, trend analysis, multi-platform drafts |
+| **Marketing** | 📊 | Campaign strategy, SEO, A/B testing, personas |
+| **Students** | 🎓 | Study guides, concept explanations, citations |
+| **Research** | 🔬 | RAG-powered deep research & literature review |
+| **Trident** | 🔱 | Autonomous execution engine with DAG visualization |
+| **Sovereign** | 👑 | Admin dashboard, metrics, audit logs |
+
+## 🏗️ Architecture
+
+```
+Neel AI
+├── backend/          # FastAPI (Python)
+│   ├── config/       # Governance & settings
+│   ├── auth/         # JWT + RBAC
+│   ├── llm/          # Ollama & LM Studio clients
+│   ├── memory/       # ChromaDB RAG pipeline
+│   ├── modules/      # 5 functional modules
+│   ├── trident/      # Autonomous execution engine
+│   └── sovereign/    # Audit & metrics
+├── frontend/         # Next.js (TypeScript)
+│   ├── src/app/      # 8 module pages
+│   ├── src/components/ # UI components
+│   └── src/hooks/    # React hooks
+└── docker-compose.yml
+```
+
+## 🔒 Governance
+
+The Sovereign Administrator (`abhi8523@gmail.com`) is **permanently hardcoded** into the source code. This identity cannot be overridden, impersonated, or revoked at runtime.
+
+## 🛠️ Tech Stack
+
+- **Backend**: Python 3.11+ / FastAPI / Pydantic
+- **Frontend**: Next.js 15 / TypeScript / Tailwind CSS / Framer Motion
+- **LLM**: Ollama (local) / LM Studio (local)
+- **Vector DB**: ChromaDB
+- **Auth**: JWT + bcrypt + RBAC
+- **Containerization**: Docker Compose
+
 ## 📄 License
 
-Private & Proprietary — Sovereign ownership by `abhi8523@gmail.com`
+MIT License — Built with 🔱 by Neel AI

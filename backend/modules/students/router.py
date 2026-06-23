@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Students Module API Routes
+Neel AI — Students Module API Routes
 =========================================
 Study guides, concept explanation, citation assistance, and summarization.
 """

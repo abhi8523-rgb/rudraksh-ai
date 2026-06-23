@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Marketing Module API Routes
+Neel AI — Marketing Module API Routes
 ==========================================
 Campaign strategy, SEO analysis, A/B testing, and customer personas.
 """

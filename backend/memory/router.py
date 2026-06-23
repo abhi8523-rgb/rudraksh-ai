@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Memory Router.
+Neel AI — Memory Router.
 
 API endpoints for:
   - Semantic search (query memory)
@@ -35,7 +35,7 @@ from memory.chroma_client import get_chroma_client
 from memory.embeddings import get_embedding_service
 from memory.ingest import ingest_file, ingest_text
 
-logger = logging.getLogger("rudraksh.memory.router")
+logger = logging.getLogger("neel.memory.router")
 
 router = APIRouter(prefix="/api/v1/memory", tags=["Memory"])
 

@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Research Module API Routes
+Neel AI — Research Module API Routes
 =========================================
 Deep RAG queries across uploaded papers, hypothesis generation, and literature review synthesis.
 """

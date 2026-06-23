@@ -1,13 +1,13 @@
 import type { ModuleConfig, SidebarItem } from '@/types';
 
 /* ════════════════════════════════════════════════════════════════
-   Rudraksh AI — Constants
+   Neel AI — Constants
    ════════════════════════════════════════════════════════════════ */
 
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
 
-export const APP_NAME = 'Rudraksh AI';
+export const APP_NAME = 'Neel AI';
 export const APP_TAGLINE = 'Your Sovereign Intelligence Suite';
 export const APP_VERSION = '1.0.0';
 
@@ -68,11 +68,11 @@ export const MODULES: ModuleConfig[] = [
     gradient: 'from-cyan-500 to-blue-500',
   },
   {
-    id: 'shivoham',
-    name: 'Shivoham',
+    id: 'trident',
+    name: 'Trident',
     description: 'Autonomous execution engine with DAG visualization',
     icon: '🔱',
-    path: '/shivoham',
+    path: '/trident',
     color: '#f97316',
     gradient: 'from-orange-500 to-red-500',
   },
@@ -95,7 +95,7 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   { id: 'marketing', label: 'Marketing', icon: '📊', path: '/marketing' },
   { id: 'students', label: 'Students', icon: '🎓', path: '/students' },
   { id: 'research', label: 'Research', icon: '🔬', path: '/research' },
-  { id: 'shivoham', label: 'Shivoham', icon: '🔱', path: '/shivoham' },
+  { id: 'trident', label: 'Trident', icon: '🔱', path: '/trident' },
   { id: 'sovereign', label: 'Sovereign', icon: '👑', path: '/sovereign' },
 ];
 

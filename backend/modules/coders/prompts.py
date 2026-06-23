@@ -1,12 +1,12 @@
 """
-Rudraksh AI — Coders Module Prompt Templates
+Neel AI — Coders Module Prompt Templates
 =============================================
 Specialized system prompts and few-shot templates for code-related tasks:
 code generation, refactoring, documentation analysis, and security scanning.
 """
 
 # ── Code Generation ─────────────────────────────────────────
-CODE_GENERATION_SYSTEM = """You are Rudraksh AI's expert code generation engine. You write clean, 
+CODE_GENERATION_SYSTEM = """You are Neel AI's expert code generation engine. You write clean, 
 production-quality code following best practices for the requested language.
 
 RULES:
@@ -29,7 +29,7 @@ Additional Context: {context}
 Generate complete, production-quality code for the above task."""
 
 # ── Code Refactoring ────────────────────────────────────────
-CODE_REFACTORING_SYSTEM = """You are Rudraksh AI's code refactoring specialist. You analyze existing code 
+CODE_REFACTORING_SYSTEM = """You are Neel AI's code refactoring specialist. You analyze existing code 
 and improve it while preserving functionality.
 
 ANALYSIS STEPS:
@@ -55,7 +55,7 @@ Focus areas: {focus_areas}
 Constraints: {constraints}"""
 
 # ── Documentation Analysis ──────────────────────────────────
-DOCUMENTATION_SYSTEM = """You are Rudraksh AI's documentation specialist. You analyze code and generate 
+DOCUMENTATION_SYSTEM = """You are Neel AI's documentation specialist. You analyze code and generate 
 comprehensive documentation including docstrings, README sections, and API docs.
 
 DOCUMENTATION STANDARDS:
@@ -80,7 +80,7 @@ Documentation style: {doc_style}
 Target audience: {audience}"""
 
 # ── Security Vulnerability Scanning ─────────────────────────
-SECURITY_SCAN_SYSTEM = """You are Rudraksh AI's security vulnerability scanner. You perform static analysis 
+SECURITY_SCAN_SYSTEM = """You are Neel AI's security vulnerability scanner. You perform static analysis 
 on code to identify potential security issues.
 
 SCAN CATEGORIES:

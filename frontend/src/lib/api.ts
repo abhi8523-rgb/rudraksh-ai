@@ -2,7 +2,7 @@ import { API_BASE_URL } from './constants';
 import type { ApiResponse } from '@/types';
 
 /* ════════════════════════════════════════════════════════════════
-   Rudraksh AI — API Client
+   Neel AI — API Client
    Centralized fetch wrapper with JWT, error handling, base URL
    ════════════════════════════════════════════════════════════════ */
 
@@ -18,7 +18,7 @@ class ApiClient {
       'Content-Type': 'application/json',
     };
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('rudraksh_token');
+      const token = localStorage.getItem('neel_token');
       if (token) {
         headers['Authorization'] = `Bearer ${token}`;
       }
@@ -100,7 +100,7 @@ class ApiClient {
     try {
       const headers: HeadersInit = {};
       if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('rudraksh_token');
+        const token = localStorage.getItem('neel_token');
         if (token) {
           headers['Authorization'] = `Bearer ${token}`;
         }

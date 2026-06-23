@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Role-Based Access Control (RBAC).
+Neel AI — Role-Based Access Control (RBAC).
 
 Provides FastAPI dependency callables that:
   1. Extract and validate the JWT from the ``Authorization`` header.
@@ -30,7 +30,7 @@ from config.governance import (
 )
 from config.settings import Settings, get_settings
 
-logger = logging.getLogger("rudraksh.auth")
+logger = logging.getLogger("neel.auth")
 
 # ──────────────────────────────────────────────────────────────────────
 #  Password hashing
@@ -78,7 +78,7 @@ if _sovereign_id not in _USERS_DB:
         "email": SOVEREIGN_EMAIL,
         "display_name": "Sovereign Administrator",
         "role": Role.SOVEREIGN.value,
-        "password_hash": pwd_context.hash("rudraksh2026"),
+        "password_hash": pwd_context.hash("neel2026"),
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
     _save_users()

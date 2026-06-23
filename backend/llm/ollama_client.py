@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Ollama Async Client.
+Neel AI — Ollama Async Client.
 
 Wraps the Ollama REST API with ``httpx.AsyncClient`` for:
   - Chat completions (streaming & non-streaming)
@@ -18,7 +18,7 @@ import httpx
 
 from config.settings import Settings, get_settings
 
-logger = logging.getLogger("rudraksh.llm.ollama")
+logger = logging.getLogger("neel.llm.ollama")
 
 
 class OllamaClient:

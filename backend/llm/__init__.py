@@ -1,5 +1,5 @@
 """
-Rudraksh AI — LLM Package.
+Neel AI — LLM Package.
 
 Provides async clients for Ollama and LM Studio, SSE streaming utilities,
 and a unified FastAPI router for all LLM interactions.

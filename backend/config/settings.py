@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Application Settings.
+Neel AI — Application Settings.
 
 All runtime-configurable values live here.  They can be overridden via
 environment variables or a ``.env`` file.  Values that MUST NOT be
@@ -20,19 +20,19 @@ class Settings(BaseSettings):
     """
     Central configuration loaded from environment / .env file.
 
-    Environment variable prefix: ``RUDRAKSH_``
-    Example:  ``RUDRAKSH_OLLAMA_BASE_URL=http://localhost:11434``
+    Environment variable prefix: ``NEEL_``
+    Example:  ``NEEL_OLLAMA_BASE_URL=http://localhost:11434``
     """
 
     model_config = SettingsConfigDict(
-        env_prefix="RUDRAKSH_",
+        env_prefix="NEEL_",
         env_file=".env",
         env_file_encoding="utf-8",
         extra="ignore",
     )
 
     # ── Application ──────────────────────────────────────────────────
-    app_name: str = "Rudraksh AI"
+    app_name: str = "Neel AI"
     app_version: str = "1.0.0"
     debug: bool = False
     environment: Literal["development", "staging", "production"] = "development"
@@ -65,25 +65,25 @@ class Settings(BaseSettings):
     # ── ChromaDB ─────────────────────────────────────────────────────
     chroma_host: str = "localhost"
     chroma_port: int = 8100
-    chroma_default_collection: str = "rudraksh_memory"
+    chroma_default_collection: str = "neel_memory"
 
     # ── JWT / Auth ───────────────────────────────────────────────────
-    jwt_secret_key: str = "rudraksh-ai-change-me-in-production-2026"
+    jwt_secret_key: str = "neel-ai-change-me-in-production-2026"
     jwt_algorithm: str = "HS256"
     jwt_access_token_expire_minutes: int = 60
     jwt_refresh_token_expire_minutes: int = 10080  # 7 days
 
     # ── SQLite Audit DB ──────────────────────────────────────────────
-    sqlite_db_path: str = "data/db/rudraksh_audit.db"
+    sqlite_db_path: str = "data/db/neel_audit.db"
 
     # ── File Upload ──────────────────────────────────────────────────
     upload_dir: str = "data/uploads"
     max_upload_size_mb: int = 50
 
-    # ── Shivoham Engine ──────────────────────────────────────────────
-    shivoham_max_iterations: int = 10
-    shivoham_sandbox_timeout: int = 30  # seconds per tool call
-    shivoham_sandbox_dir: str = "data/sandbox"
+    # ── Trident Engine ───────────────────────────────────────────────
+    trident_max_iterations: int = 10
+    trident_sandbox_timeout: int = 30  # seconds per tool call
+    trident_sandbox_dir: str = "data/sandbox"
 
     # ── Derived helpers ──────────────────────────────────────────────
 
@@ -114,9 +114,9 @@ class Settings(BaseSettings):
         return self.ollama_default_model
 
     @property
-    def shivoham_task_timeout(self) -> int:
-        """Alias for shivoham_sandbox_timeout."""
-        return self.shivoham_sandbox_timeout
+    def trident_task_timeout(self) -> int:
+        """Alias for trident_sandbox_timeout."""
+        return self.trident_sandbox_timeout
 
     @property
     def audit_db_path(self) -> str:

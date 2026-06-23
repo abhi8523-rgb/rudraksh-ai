@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Configuration Package.
+Neel AI — Configuration Package.
 
 Exports governance constants, application settings, and model definitions
 used across the entire backend.

@@ -54,7 +54,7 @@ export default function MessageBubble({ message, onRetry, onDelete }: MessageBub
         {/* Header */}
         <div className={`flex items-center gap-2 mb-1 ${isUser ? 'flex-row-reverse' : ''}`}>
           <span className="text-xs font-semibold text-gray-400">
-            {isUser ? 'You' : 'Rudraksh AI'}
+            {isUser ? 'You' : 'Neel AI'}
           </span>
           <span className="text-[10px] text-gray-600">{formatTime(message.timestamp)}</span>
           {message.model && (

@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════════════════════════════
-   Rudraksh AI — TypeScript Interfaces & Types
+   Neel AI — TypeScript Interfaces & Types
    ════════════════════════════════════════════════════════════════ */
 
 // ── Chat ──
@@ -50,7 +50,7 @@ export type ModuleType =
   | 'marketing'
   | 'students'
   | 'research'
-  | 'shivoham'
+  | 'trident'
   | 'sovereign';
 
 export interface ModuleConfig {
@@ -63,7 +63,7 @@ export interface ModuleConfig {
   gradient: string;
 }
 
-// ── Shivoham ──
+// ── Trident ──
 export interface TaskNode {
   id: string;
   label: string;

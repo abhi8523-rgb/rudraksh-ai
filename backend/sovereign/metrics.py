@@ -1,7 +1,7 @@
 """
-Rudraksh AI — System Metrics.
+Neel AI — System Metrics.
 
-Collects runtime metrics about the Rudraksh AI system:
+Collects runtime metrics about the Neel AI system:
   - CPU / memory usage
   - LLM provider status
   - ChromaDB stats
@@ -20,7 +20,7 @@ from typing import Any
 
 from pydantic import BaseModel
 
-logger = logging.getLogger("rudraksh.sovereign.metrics")
+logger = logging.getLogger("neel.sovereign.metrics")
 
 # Startup timestamp
 _START_TIME = time.time()

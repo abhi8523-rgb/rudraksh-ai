@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Sovereign Router.
+Neel AI — Sovereign Router.
 
 Administrative endpoints restricted to the Sovereign Administrator
 and Admin roles:
@@ -31,7 +31,7 @@ from config.settings import get_settings
 from sovereign.audit import AuditAction, get_audit_logger
 from sovereign.metrics import MetricsSnapshot, SystemMetrics
 
-logger = logging.getLogger("rudraksh.sovereign.router")
+logger = logging.getLogger("neel.sovereign.router")
 
 router = APIRouter(prefix="/api/v1/sovereign", tags=["Sovereign Administration"])
 
@@ -242,8 +242,8 @@ async def get_runtime_config() -> dict[str, Any]:
         "jwt_secret_key": "***MASKED***",
         "jwt_access_token_expire_minutes": settings.jwt_access_token_expire_minutes,
         "max_upload_size_mb": settings.max_upload_size_mb,
-        "shivoham_max_iterations": settings.shivoham_max_iterations,
-        "shivoham_sandbox_timeout": settings.shivoham_sandbox_timeout,
+        "Trident_max_iterations": settings.Trident_max_iterations,
+        "Trident_sandbox_timeout": settings.Trident_sandbox_timeout,
     }
 
     return config

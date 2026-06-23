@@ -144,7 +144,7 @@ export default function SovereignPage() {
           {[
             { time: '2 min ago', event: 'Chat completion', user: 'sovereign', model: 'llama3.2:3b', status: 'success' },
             { time: '15 min ago', event: 'Document uploaded', user: 'sovereign', model: 'N/A', status: 'success' },
-            { time: '1 hour ago', event: 'Shivoham execution', user: 'sovereign', model: 'llama3.2:3b', status: 'completed' },
+            { time: '1 hour ago', event: 'Trident execution', user: 'sovereign', model: 'llama3.2:3b', status: 'completed' },
             { time: '3 hours ago', event: 'System startup', user: 'system', model: 'N/A', status: 'success' },
             { time: '5 hours ago', event: 'Model pulled', user: 'sovereign', model: 'nomic-embed-text', status: 'success' },
           ].map((log, i) => (

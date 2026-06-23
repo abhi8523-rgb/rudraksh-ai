@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Document Ingestion Pipeline.
+Neel AI — Document Ingestion Pipeline.
 
 Supports ingesting:
   - Plain text (.txt)
@@ -24,7 +24,7 @@ from typing import Any
 from memory.chroma_client import ChromaMemoryClient, get_chroma_client
 from memory.embeddings import EmbeddingService, get_embedding_service
 
-logger = logging.getLogger("rudraksh.memory.ingest")
+logger = logging.getLogger("neel.memory.ingest")
 
 
 # ──────────────────────────────────────────────────────────────────────

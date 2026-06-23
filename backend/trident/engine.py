@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Shivoham Core Execution Engine
+Neel AI — Trident Core Execution Engine
 =============================================
 The autonomous execution loop: plan → execute → verify → correct → repeat.
 Orchestrates DAG planning, tool execution, and self-correction.
@@ -10,10 +10,10 @@ import json
 from datetime import datetime
 from typing import AsyncGenerator, Optional
 
-from shivoham.dag import DAGPlanner, TaskNode, TaskStatus
-from shivoham.tools import ShivohamTools, ToolResult
-from shivoham.verifier import Verifier
-from shivoham.sandbox import Sandbox
+from trident.dag import DAGPlanner, TaskNode, TaskStatus
+from trident.tools import TridentTools, ToolResult
+from trident.verifier import Verifier
+from trident.sandbox import Sandbox
 from config.settings import get_settings
 
 
@@ -33,7 +33,7 @@ class ExecutionEvent:
         return f"data: {payload}\n\n"
 
 
-class ShivohamEngine:
+class TridentEngine:
     """The core autonomous execution engine.
     
     Workflow:
@@ -49,9 +49,9 @@ class ShivohamEngine:
         self._settings = get_settings()
         self._sandbox = Sandbox()
         self._planner = DAGPlanner()
-        self._tools = ShivohamTools(self._sandbox)
+        self._tools = TridentTools(self._sandbox)
         self._verifier = Verifier()
-        self._max_iterations = self._settings.shivoham_max_iterations
+        self._max_iterations = self._settings.Trident_max_iterations
         self._execution_log: list[dict] = []
         self._is_running = False
         self._should_stop = False

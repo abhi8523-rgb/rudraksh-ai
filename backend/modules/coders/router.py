@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Coders Module API Routes
+Neel AI — Coders Module API Routes
 =======================================
 Endpoints for code generation, refactoring, documentation, and security scanning.
 """

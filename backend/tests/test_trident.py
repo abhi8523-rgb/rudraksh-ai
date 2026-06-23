@@ -1,12 +1,12 @@
 """
-Rudraksh AI — Shivoham Engine Tests
+Neel AI — Trident Engine Tests
 =====================================
 Tests for DAG planning, sandbox security, tool execution, and verification.
 """
 
 import pytest
-from shivoham.dag import DAGPlanner, TaskNode, TaskStatus
-from shivoham.sandbox import Sandbox, SandboxViolation
+from trident.dag import DAGPlanner, TaskNode, TaskStatus
+from trident.sandbox import Sandbox, SandboxViolation
 
 
 class TestDAGPlanner:

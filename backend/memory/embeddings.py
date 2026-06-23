@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Embedding Service.
+Neel AI — Embedding Service.
 
 Generates text embeddings using Ollama's ``/api/embed`` endpoint
 (nomic-embed-text by default).  Provides chunking utilities for
@@ -15,7 +15,7 @@ from typing import Optional
 from llm.ollama_client import OllamaClient, get_ollama_client
 from config.settings import Settings, get_settings
 
-logger = logging.getLogger("rudraksh.memory.embeddings")
+logger = logging.getLogger("neel.memory.embeddings")
 
 
 class EmbeddingService:

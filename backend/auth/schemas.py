@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Auth Pydantic Schemas.
+Neel AI — Auth Pydantic Schemas.
 
 Request / response models for authentication and user identity.
 """

@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Audit Logger.
+Neel AI — Audit Logger.
 
 Provides persistent, tamper-evident audit logging using SQLite (aiosqlite).
 Every significant action in the system is recorded with:
@@ -24,7 +24,7 @@ import aiosqlite
 
 from config.settings import Settings, get_settings
 
-logger = logging.getLogger("rudraksh.sovereign.audit")
+logger = logging.getLogger("neel.sovereign.audit")
 
 
 @unique
@@ -54,9 +54,9 @@ class AuditAction(StrEnum):
     # Modules
     MODULE_EXECUTE = "module.execute"
 
-    # Shivoham
-    SHIVOHAM_EXECUTE = "shivoham.execute"
-    SHIVOHAM_TOOL_CALL = "shivoham.tool_call"
+    # Trident
+    Trident_EXECUTE = "Trident.execute"
+    Trident_TOOL_CALL = "Trident.tool_call"
 
     # Admin
     USER_CREATE = "admin.user_create"

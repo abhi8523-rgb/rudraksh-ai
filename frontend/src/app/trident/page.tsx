@@ -22,7 +22,7 @@ const STATUS_COLORS: Record<string, string> = {
   failed: 'bg-red-500/20 text-red-400 border-red-500/30',
 };
 
-export default function ShivohamPage() {
+export default function TridentPage() {
   const [goal, setGoal] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [tasks, setTasks] = useState<TaskNode[]>([]);
@@ -43,7 +43,7 @@ export default function ShivohamPage() {
     setPlanSummary('');
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/shivoham/execute`, {
+      const response = await fetch(`${API_BASE_URL}/api/trident/execute`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ goal, context: '' }),
@@ -97,14 +97,14 @@ export default function ShivohamPage() {
 
   const handleStop = async () => {
     try {
-      await fetch(`${API_BASE_URL}/api/shivoham/stop`, { method: 'POST' });
+      await fetch(`${API_BASE_URL}/api/trident/stop`, { method: 'POST' });
     } catch {}
   };
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-heading font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">🔱 Shivoham</h1>
+        <h1 className="text-3xl font-heading font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">🔱 Trident</h1>
         <p className="text-gray-500 mt-1">Autonomous execution engine — describe a goal and watch it come alive</p>
       </motion.div>
 

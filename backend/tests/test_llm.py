@@ -1,5 +1,5 @@
 """
-Rudraksh AI — LLM Integration Tests
+Neel AI — LLM Integration Tests
 =====================================
 Tests for Ollama and LM Studio client connectivity and response handling.
 """
@@ -96,4 +96,4 @@ class TestModelRegistry:
         config = GovernanceConfig()
         # Should always be the hardcoded value
         assert config.SOVEREIGN_ADMIN_EMAIL == "abhi8523@gmail.com"
-        assert config.SYSTEM_NAME == "Rudraksh AI"
+        assert config.SYSTEM_NAME == "Neel AI"

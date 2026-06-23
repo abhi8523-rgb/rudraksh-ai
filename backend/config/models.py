@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Model Registry & Configuration.
+Neel AI — Model Registry & Configuration.
 
 Defines the supported LLM models, their capabilities, and recommended
 parameter presets.  Optimised for CPU inference on a 16 GB RAM machine.

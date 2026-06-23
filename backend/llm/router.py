@@ -1,5 +1,5 @@
 """
-Rudraksh AI — LLM Router.
+Neel AI — LLM Router.
 
 Unified API router for interacting with LLM providers (Ollama & LM Studio).
 Provides endpoints for:
@@ -33,7 +33,7 @@ from llm.ollama_client import OllamaClient, get_ollama_client
 from llm.lmstudio_client import LMStudioClient, get_lmstudio_client
 from llm.streaming import stream_sse_response
 
-logger = logging.getLogger("rudraksh.llm.router")
+logger = logging.getLogger("neel.llm.router")
 
 router = APIRouter(prefix="/api/v1/llm", tags=["LLM"])
 

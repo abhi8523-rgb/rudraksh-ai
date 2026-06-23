@@ -1,5 +1,5 @@
 """
-Rudraksh AI — SSE Streaming Utilities.
+Neel AI — SSE Streaming Utilities.
 
 Provides helpers that convert async token iterators from Ollama / LM Studio
 into FastAPI ``StreamingResponse`` objects using Server-Sent Events (SSE).
@@ -19,7 +19,7 @@ from typing import Any, AsyncIterator, Literal
 from fastapi import Request
 from starlette.responses import StreamingResponse
 
-logger = logging.getLogger("rudraksh.llm.streaming")
+logger = logging.getLogger("neel.llm.streaming")
 
 
 async def _ollama_chat_event_generator(

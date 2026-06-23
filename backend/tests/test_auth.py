@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Auth & RBAC Tests
+Neel AI — Auth & RBAC Tests
 =================================
 Tests for authentication, RBAC enforcement, and governance constraints.
 """
@@ -17,8 +17,8 @@ class TestGovernance:
         assert GOVERNANCE.sovereign_email == "abhi8523@gmail.com"
 
     def test_system_name(self):
-        """System name must be Rudraksh AI."""
-        assert GOVERNANCE.system_name == "Rudraksh AI"
+        """System name must be Neel AI."""
+        assert GOVERNANCE.system_name == "Neel AI"
 
     def test_sovereign_has_all_permissions(self):
         """Sovereign must have ALL permissions."""
@@ -26,7 +26,7 @@ class TestGovernance:
         assert Permission.MANAGE_GOVERNANCE in perms
         assert Permission.MANAGE_MODELS in perms
         assert Permission.VIEW_AUDIT_LOGS in perms
-        assert Permission.EXECUTE_SHIVOHAM in perms
+        assert Permission.EXECUTE_Trident in perms
         assert Permission.QUERY_LLM in perms
 
     def test_is_sovereign(self):

@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Social Media Module API Routes
+Neel AI — Social Media Module API Routes
 =============================================
 Endpoints for content calendar, trend analysis, post drafting, and engagement simulation.
 """

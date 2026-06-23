@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Shivoham DAG Task Planner
+Neel AI — Trident DAG Task Planner
 ========================================
 Breaks high-level goals into a Directed Acyclic Graph (DAG) of subtasks,
 determines execution order via topological sort, and supports dynamic re-planning.
@@ -63,7 +63,7 @@ class TaskNode:
         }
 
 
-DAG_PLANNING_SYSTEM = """You are the Shivoham task planner — an expert at decomposing complex goals 
+DAG_PLANNING_SYSTEM = """You are the Trident task planner — an expert at decomposing complex goals 
 into structured execution plans.
 
 Given a high-level goal, you must:
@@ -114,7 +114,7 @@ RULES:
 
 
 class DAGPlanner:
-    """Plans and manages task DAGs for the Shivoham engine."""
+    """Plans and manages task DAGs for the Trident engine."""
 
     def __init__(self):
         self.tasks: dict[str, TaskNode] = {}

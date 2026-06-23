@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Memory/RAG Tests
+Neel AI — Memory/RAG Tests
 ================================
 Tests for ChromaDB integration, embedding pipeline, and file ingestion.
 """

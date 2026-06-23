@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Shivoham Verification & Self-Correction
+Neel AI — Trident Verification & Self-Correction
 ======================================================
 Post-execution outcome checking, LLM-powered assessment,
 error classification, and automatic plan adjustment.
@@ -10,7 +10,7 @@ from llm.ollama_client import OllamaClient
 from config.settings import get_settings
 
 
-VERIFICATION_SYSTEM = """You are the Shivoham verification engine. You assess whether a task 
+VERIFICATION_SYSTEM = """You are the Trident verification engine. You assess whether a task 
 was completed successfully and provide structured feedback.
 
 Given:

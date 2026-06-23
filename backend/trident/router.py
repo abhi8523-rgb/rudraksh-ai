@@ -1,5 +1,5 @@
 """
-Rudraksh AI — Shivoham API Routes
+Neel AI — Trident API Routes
 ==================================
 Endpoints for the autonomous execution engine.
 """
@@ -9,12 +9,12 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 from typing import Optional
 
-from shivoham.engine import ShivohamEngine
+from trident.engine import TridentEngine
 
-router = APIRouter(prefix="/api/shivoham", tags=["Shivoham"])
+router = APIRouter(prefix="/api/trident", tags=["Trident"])
 
 # Global engine instance (one active execution at a time)
-_engine: Optional[ShivohamEngine] = None
+_engine: Optional[TridentEngine] = None
 
 
 class GoalRequest(BaseModel):
@@ -28,7 +28,7 @@ class GoalResponse(BaseModel):
 
 @router.post("/execute", summary="Execute an autonomous goal")
 async def execute_goal(request: GoalRequest):
-    """Submit a high-level goal for autonomous execution by the Shivoham engine.
+    """Submit a high-level goal for autonomous execution by the Trident engine.
     
     Returns a streaming SSE response with real-time execution events.
     The engine will:
@@ -45,7 +45,7 @@ async def execute_goal(request: GoalRequest):
             detail="Another execution is already in progress. Stop it first or wait for completion."
         )
 
-    _engine = ShivohamEngine()
+    _engine = TridentEngine()
 
     async def event_stream():
         async for event in _engine.execute(
@@ -68,7 +68,7 @@ async def execute_goal(request: GoalRequest):
 
 @router.post("/stop", summary="Stop current execution")
 async def stop_execution():
-    """Request the Shivoham engine to stop the current execution gracefully."""
+    """Request the Trident engine to stop the current execution gracefully."""
     global _engine
     if not _engine or not _engine.is_running:
         raise HTTPException(status_code=404, detail="No active execution to stop")
@@ -79,7 +79,7 @@ async def stop_execution():
 
 @router.get("/status", summary="Get engine status")
 async def get_status():
-    """Get the current status of the Shivoham engine."""
+    """Get the current status of the Trident engine."""
     global _engine
     if not _engine:
         return {"is_running": False, "plan": None, "execution_log": []}
@@ -88,7 +88,7 @@ async def get_status():
 
 @router.get("/tools", summary="List available tools")
 async def list_tools():
-    """List all tools available to the Shivoham engine."""
-    from shivoham.tools import ShivohamTools
-    tools = ShivohamTools()
+    """List all tools available to the Trident engine."""
+    from trident.tools import TridentTools
+    tools = TridentTools()
     return {"tools": tools.get_available_tools()}

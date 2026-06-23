@@ -1,8 +1,8 @@
 """
-Rudraksh AI — Main Application Entry Point
-============================================
+Neel AI — Main Application Entry Point
+========================================
 FastAPI application that ties together all modules:
-LLM integration, memory/RAG, functional modules, Shivoham engine,
+LLM integration, memory/RAG, functional modules, Trident engine,
 sovereign dashboard, and governance enforcement.
 
 Launch: uvicorn main:app --reload --port 8001
@@ -39,7 +39,7 @@ async def lifespan(app: FastAPI):
 
     # Create necessary directories
     os.makedirs(settings.upload_dir, exist_ok=True)
-    os.makedirs(settings.shivoham_sandbox_dir, exist_ok=True)
+    os.makedirs(settings.trident_sandbox_dir, exist_ok=True)
     os.makedirs(os.path.dirname(settings.audit_db_path) or "data/db", exist_ok=True)
 
     # Initialize audit database
@@ -61,13 +61,13 @@ async def lifespan(app: FastAPI):
         resource="system",
         details={"timestamp": datetime.utcnow().isoformat()},
     )
-    print("🔱 Rudraksh AI shutting down...")
+    print("🔱 Neel AI shutting down...")
 
 
 # ── App Creation ────────────────────────────────────────────
 
 app = FastAPI(
-    title="Rudraksh AI",
+    title="Neel AI",
     description="Sovereign Intelligence Suite — A privacy-first, locally-hosted AI platform",
     version=GOVERNANCE.version,
     lifespan=lifespan,
@@ -148,7 +148,7 @@ from modules.social_media.router import router as social_router
 from modules.marketing.router import router as marketing_router
 from modules.students.router import router as students_router
 from modules.research.router import router as research_router
-from shivoham.router import router as shivoham_router
+from trident.router import router as trident_router
 
 app.include_router(llm_router)
 app.include_router(memory_router)
@@ -159,7 +159,7 @@ app.include_router(social_router)
 app.include_router(marketing_router)
 app.include_router(students_router)
 app.include_router(research_router)
-app.include_router(shivoham_router)
+app.include_router(trident_router)
 
 
 # ── Global Exception Handler ──────────────────────────────
