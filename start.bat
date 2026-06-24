@@ -7,36 +7,21 @@ echo       NEEL AI - Sovereign Intelligence
 echo  ========================================
 echo.
 
+:: Fix PATH - ensure common tool directories are included
+set "PATH=C:\Program Files\nodejs;%LOCALAPPDATA%\Programs\Ollama;C:\Program Files\Ollama;%PATH%"
+
 :: ──────────────────────────────────────────
 :: STEP 1: Check for Ollama
 :: ──────────────────────────────────────────
 echo [1/5] Checking for Ollama...
 
-:: Check PATH first
 where ollama >nul 2>&1
 if %errorlevel% equ 0 (
-    echo       OK - Ollama found in PATH
+    echo       OK - Ollama found
     goto :ollama_ready
 )
 
-:: Check common install locations
-if exist "%LOCALAPPDATA%\Programs\Ollama\ollama.exe" (
-    set "PATH=%LOCALAPPDATA%\Programs\Ollama;%PATH%"
-    echo       OK - Ollama found in AppData
-    goto :ollama_ready
-)
-if exist "C:\Program Files\Ollama\ollama.exe" (
-    set "PATH=C:\Program Files\Ollama;%PATH%"
-    echo       OK - Ollama found in Program Files
-    goto :ollama_ready
-)
-if exist "%USERPROFILE%\AppData\Local\Programs\Ollama\ollama.exe" (
-    set "PATH=%USERPROFILE%\AppData\Local\Programs\Ollama;%PATH%"
-    echo       OK - Ollama found in user AppData
-    goto :ollama_ready
-)
-
-:: Ollama not found anywhere
+:: Ollama not found
 echo.
 echo  ========================================
 echo   Ollama is NOT installed on your system.
@@ -45,24 +30,19 @@ echo   language models locally on your PC.
 echo  ========================================
 echo.
 echo   Opening the download page now...
-echo.
 start https://ollama.com/download
-echo   Please follow these steps:
-echo     1. Download Ollama from the page that just opened
-echo     2. Install it (just run the installer, click Next)
-echo     3. RESTART this script after installation
 echo.
-echo   NOTE: After installing, you may need to restart
-echo   your computer for Ollama to be in your PATH.
+echo   1. Download and install Ollama
+echo   2. Restart your computer
+echo   3. Run this script again
 echo.
-echo  ========================================
 pause
 exit /b 0
 
 :ollama_ready
 
 :: ──────────────────────────────────────────
-:: STEP 2: Start Ollama server if not running
+:: STEP 2: Start Ollama server + pull models
 :: ──────────────────────────────────────────
 echo [2/5] Starting Ollama server...
 tasklist /FI "IMAGENAME eq ollama.exe" 2>NUL | find /I /N "ollama.exe">NUL
@@ -74,19 +54,16 @@ if %errorlevel% neq 0 (
     echo       OK - Ollama already running
 )
 
-:: Pull default model if not present
 echo       Checking AI models...
 ollama list 2>nul | find "llama3.2:3b" >nul 2>&1
 if %errorlevel% neq 0 (
-    echo       Downloading llama3.2:3b model...
-    echo       This is a one-time download of ~2GB, please wait...
+    echo       Downloading llama3.2:3b model (~2GB, one-time)...
     ollama pull llama3.2:3b
     echo       OK - llama3.2:3b downloaded
 ) else (
     echo       OK - llama3.2:3b ready
 )
 
-:: Pull embedding model
 ollama list 2>nul | find "nomic-embed-text" >nul 2>&1
 if %errorlevel% neq 0 (
     echo       Downloading nomic-embed-text for RAG...
@@ -100,7 +77,7 @@ if %errorlevel% neq 0 (
 set "NEEL_ROOT=%~dp0"
 
 :: ──────────────────────────────────────────
-:: STEP 3: Check for Python
+:: STEP 3: Check Python + setup backend
 :: ──────────────────────────────────────────
 echo [3/5] Setting up backend...
 
@@ -109,9 +86,9 @@ if %errorlevel% neq 0 (
     echo.
     echo   Python is NOT installed!
     echo   Download from: https://python.org
-    echo   Make sure to check "Add to PATH" during install.
-    echo.
+    echo   IMPORTANT: Check "Add to PATH" during install!
     start https://python.org/downloads
+    echo.
     pause
     exit /b 0
 )
@@ -121,8 +98,7 @@ if not exist "venv" (
     echo       Creating Python virtual environment...
     python -m venv venv
     if %errorlevel% neq 0 (
-        echo   ERROR: Failed to create virtual environment.
-        echo   Make sure Python 3.11+ is installed.
+        echo   ERROR: Failed to create venv. Need Python 3.11+
         pause
         exit /b 1
     )
@@ -137,37 +113,60 @@ echo       OK - Backend ready
 :: STEP 4: Start backend server
 :: ──────────────────────────────────────────
 echo [4/5] Starting backend server on port 8001...
-start "Neel-Backend" /MIN cmd /k "cd /d %NEEL_ROOT%backend && call venv\Scripts\activate.bat && uvicorn main:app --host 0.0.0.0 --port 8001 --reload"
+start "Neel-Backend" /MIN cmd /k "set PATH=C:\Program Files\nodejs;%PATH% && cd /d %NEEL_ROOT%backend && call venv\Scripts\activate.bat && uvicorn main:app --host 0.0.0.0 --port 8001 --reload"
 timeout /t 4 >nul
 echo       OK - Backend running at http://localhost:8001
 
 :: ──────────────────────────────────────────
-:: STEP 5: Check for Node.js and start frontend
+:: STEP 5: Check Node.js + start frontend
 :: ──────────────────────────────────────────
 echo [5/5] Starting frontend...
 
-where npm >nul 2>&1
+where node >nul 2>&1
 if %errorlevel% neq 0 (
     echo.
     echo   Node.js is NOT installed!
-    echo   Download from: https://nodejs.org
-    echo.
+    echo   Download from: https://nodejs.org (LTS version)
     start https://nodejs.org
+    echo.
     echo   Install Node.js, then run this script again.
-    echo   (The backend is already running on port 8001)
     pause
     exit /b 0
 )
 
-cd /d "%NEEL_ROOT%frontend"
-if not exist "node_modules" (
-    echo       Installing frontend dependencies (first time only)...
-    echo       This may take 2-3 minutes, please wait...
-    call npm install
+:: Verify npm is accessible
+where npm >nul 2>&1
+if %errorlevel% neq 0 (
+    echo       npm not in PATH, using direct path...
+    set "NPM_CMD=C:\Program Files\nodejs\npm.cmd"
+) else (
+    set "NPM_CMD=npm"
 )
-start "Neel-Frontend" /MIN cmd /k "cd /d %NEEL_ROOT%frontend && npm run dev"
+
+cd /d "%NEEL_ROOT%frontend"
+
+if not exist "node_modules" (
+    echo       Installing frontend dependencies (first time, ~2 min)...
+    call "%NPM_CMD%" install
+    if %errorlevel% neq 0 (
+        echo.
+        echo   ERROR: npm install failed!
+        echo   Try running manually:
+        echo     cd "%NEEL_ROOT%frontend"
+        echo     npm install
+        echo.
+        pause
+        exit /b 1
+    )
+    echo       OK - Dependencies installed
+) else (
+    echo       OK - Dependencies already installed
+)
+
+echo       Starting Next.js dev server...
+start "Neel-Frontend" /MIN cmd /k "set PATH=C:\Program Files\nodejs;%PATH% && cd /d %NEEL_ROOT%frontend && npm run dev"
 timeout /t 8 >nul
-echo       OK - Frontend running at http://localhost:3000
+echo       OK - Frontend starting at http://localhost:3000
 
 :: ──────────────────────────────────────────
 :: ALL DONE
