@@ -8,10 +8,10 @@ import { useChat } from '@/hooks/useChat';
 import MessageBubble from '@/components/chat/MessageBubble';
 
 const TOOLS = [
-  { id: 'generate', name: 'Generate Code', icon: '✨', desc: 'Create code from description', color: 'from-violet-500 to-purple-600' },
-  { id: 'refactor', name: 'Refactor', icon: '🔄', desc: 'Improve existing code', color: 'from-blue-500 to-cyan-500' },
-  { id: 'document', name: 'Document', icon: '📝', desc: 'Generate documentation', color: 'from-emerald-500 to-teal-500' },
-  { id: 'scan', name: 'Security Scan', icon: '🛡️', desc: 'Find vulnerabilities', color: 'from-red-500 to-rose-600' },
+  { id: 'generate', name: 'Generate Code', icon: 'âœ¨', desc: 'Create code from description', color: 'from-violet-500 to-purple-600' },
+  { id: 'refactor', name: 'Refactor', icon: 'ðŸ”„', desc: 'Improve existing code', color: 'from-blue-500 to-cyan-500' },
+  { id: 'document', name: 'Document', icon: 'ðŸ“', desc: 'Generate documentation', color: 'from-emerald-500 to-teal-500' },
+  { id: 'scan', name: 'Security Scan', icon: 'ðŸ›¡ï¸', desc: 'Find vulnerabilities', color: 'from-red-500 to-rose-600' },
 ];
 
 const LANGUAGES = ['Python', 'JavaScript', 'TypeScript', 'Java', 'C++', 'Go', 'Rust', 'C#', 'Ruby', 'PHP'];
@@ -32,7 +32,7 @@ export default function CodersPage() {
   return (
     <div className="p-6 space-y-6 max-w-6xl mx-auto">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-heading font-bold bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">⚡ Coders</h1>
+        <h1 className="text-3xl font-heading font-bold bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">âš¡ Coders</h1>
         <p className="text-gray-500 mt-1">Code generation, refactoring, documentation & security analysis</p>
       </motion.div>
 
@@ -75,7 +75,7 @@ export default function CodersPage() {
           className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 text-sm text-white placeholder-gray-600 resize-none outline-none focus:border-violet-500/30 font-mono"
         />
         <div className="flex justify-between items-center">
-          <span className="text-xs text-gray-600">Language: {language} • Tool: {TOOLS.find(t => t.id === activeTool)?.name}</span>
+          <span className="text-xs text-gray-600">Language: {language} â€¢ Tool: {TOOLS.find(t => t.id === activeTool)?.name}</span>
           <Button onClick={handleSubmit} disabled={!input.trim() || isStreaming}>
             {isStreaming ? 'Processing...' : `Run ${TOOLS.find(t => t.id === activeTool)?.name}`}
           </Button>
@@ -86,7 +86,7 @@ export default function CodersPage() {
       {messages.length > 0 && (
         <div className="space-y-3">
           {messages.map((msg, i) => (
-            <MessageBubble key={i} role={msg.role} content={msg.content} />
+            <MessageBubble key={msg.id || i} message={msg} />
           ))}
         </div>
       )}

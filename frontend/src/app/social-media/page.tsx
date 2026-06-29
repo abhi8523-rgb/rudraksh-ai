@@ -8,10 +8,10 @@ import { useChat } from '@/hooks/useChat';
 import MessageBubble from '@/components/chat/MessageBubble';
 
 const TOOLS = [
-  { id: 'calendar', name: 'Content Calendar', icon: '📅', desc: 'Plan your posting schedule' },
-  { id: 'trends', name: 'Trend Analysis', icon: '📈', desc: 'Discover trending topics' },
-  { id: 'draft', name: 'Post Drafts', icon: '✍️', desc: 'Write platform-optimized posts' },
-  { id: 'engagement', name: 'Engagement Sim', icon: '🎯', desc: 'Predict content performance' },
+  { id: 'calendar', name: 'Content Calendar', icon: 'ðŸ“…', desc: 'Plan your posting schedule' },
+  { id: 'trends', name: 'Trend Analysis', icon: 'ðŸ“ˆ', desc: 'Discover trending topics' },
+  { id: 'draft', name: 'Post Drafts', icon: 'âœï¸', desc: 'Write platform-optimized posts' },
+  { id: 'engagement', name: 'Engagement Sim', icon: 'ðŸŽ¯', desc: 'Predict content performance' },
 ];
 
 const PLATFORMS = ['Instagram', 'Twitter/X', 'LinkedIn', 'TikTok', 'Facebook', 'YouTube'];
@@ -35,7 +35,7 @@ export default function SocialMediaPage() {
   return (
     <div className="p-6 space-y-6 max-w-6xl mx-auto">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-heading font-bold bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent">📱 Social Media</h1>
+        <h1 className="text-3xl font-heading font-bold bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent">ðŸ“± Social Media</h1>
         <p className="text-gray-500 mt-1">Content planning, trend analysis & multi-platform drafting</p>
       </motion.div>
 
@@ -79,7 +79,7 @@ export default function SocialMediaPage() {
       </Card>
 
       {messages.length > 0 && (
-        <div className="space-y-3">{messages.map((msg, i) => <MessageBubble key={i} role={msg.role} content={msg.content} />)}</div>
+        <div className="space-y-3">{messages.map((msg, i) => <MessageBubble key={msg.id || i} message={msg} />)}</div>
       )}
     </div>
   );

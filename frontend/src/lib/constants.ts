@@ -101,9 +101,9 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
 
 // ── Default Models ──
 export const DEFAULT_MODELS = [
-  { id: 'deepseek-r1:14b', name: 'DeepSeek R1 14B', provider: 'Ollama', contextLength: 32768, isLoaded: true, parameters: '14B' },
+  { id: 'llama3.2:3b', name: 'Llama 3.2 3B', provider: 'Ollama', contextLength: 131072, isLoaded: true, parameters: '3B' },
+  { id: 'deepseek-r1:14b', name: 'DeepSeek R1 14B', provider: 'Ollama', contextLength: 32768, isLoaded: false, parameters: '14B' },
   { id: 'llama3.1:8b', name: 'Llama 3.1 8B', provider: 'Ollama', contextLength: 131072, isLoaded: false, parameters: '8B' },
-  { id: 'codellama:13b', name: 'Code Llama 13B', provider: 'Ollama', contextLength: 16384, isLoaded: false, parameters: '13B' },
   { id: 'mistral:7b', name: 'Mistral 7B', provider: 'Ollama', contextLength: 32768, isLoaded: false, parameters: '7B' },
 ];
 

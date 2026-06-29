@@ -1,6 +1,4 @@
-/* ════════════════════════════════════════════════════════════════
-   Badge — Status badges
-   ════════════════════════════════════════════════════════════════ */
+/* Badge — Light theme status badges */
 
 type BadgeVariant = 'online' | 'offline' | 'processing' | 'error' | 'info' | 'warning' | 'default';
 
@@ -13,23 +11,23 @@ interface BadgeProps {
 }
 
 const variantClasses: Record<BadgeVariant, string> = {
-  online: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-  offline: 'bg-gray-500/10 text-gray-400 border-gray-500/20',
-  processing: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-  error: 'bg-rose-500/10 text-rose-400 border-rose-500/20',
-  info: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-  warning: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-  default: 'bg-white/5 text-gray-400 border-white/10',
+  online: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  offline: 'bg-slate-50 text-slate-500 border-slate-200',
+  processing: 'bg-amber-50 text-amber-700 border-amber-200',
+  error: 'bg-red-50 text-red-700 border-red-200',
+  info: 'bg-blue-50 text-blue-700 border-blue-200',
+  warning: 'bg-amber-50 text-amber-700 border-amber-200',
+  default: 'bg-slate-50 text-slate-600 border-slate-200',
 };
 
 const dotColors: Record<BadgeVariant, string> = {
-  online: 'bg-emerald-400',
-  offline: 'bg-gray-500',
-  processing: 'bg-amber-400 animate-pulse',
-  error: 'bg-rose-400',
-  info: 'bg-blue-400',
-  warning: 'bg-amber-400',
-  default: 'bg-gray-400',
+  online: 'bg-emerald-500',
+  offline: 'bg-slate-400',
+  processing: 'bg-amber-500 animate-pulse',
+  error: 'bg-red-500',
+  info: 'bg-blue-500',
+  warning: 'bg-amber-500',
+  default: 'bg-slate-400',
 };
 
 export default function Badge({ variant = 'default', children, dot = false, className = '', size = 'sm' }: BadgeProps) {

@@ -8,10 +8,10 @@ import { useChat } from '@/hooks/useChat';
 import MessageBubble from '@/components/chat/MessageBubble';
 
 const TOOLS = [
-  { id: 'guide', name: 'Study Guide', icon: '📚', desc: 'Personalized study plans' },
-  { id: 'explain', name: 'Explain Concept', icon: '💡', desc: 'Clear, multi-level explanations' },
-  { id: 'cite', name: 'Citation Helper', icon: '📑', desc: 'Format APA, MLA, Chicago & more' },
-  { id: 'summarize', name: 'Summarize', icon: '📋', desc: 'Condense texts efficiently' },
+  { id: 'guide', name: 'Study Guide', icon: 'ðŸ“š', desc: 'Personalized study plans' },
+  { id: 'explain', name: 'Explain Concept', icon: 'ðŸ’¡', desc: 'Clear, multi-level explanations' },
+  { id: 'cite', name: 'Citation Helper', icon: 'ðŸ“‘', desc: 'Format APA, MLA, Chicago & more' },
+  { id: 'summarize', name: 'Summarize', icon: 'ðŸ“‹', desc: 'Condense texts efficiently' },
 ];
 
 const LEVELS = ['High School', 'Undergraduate', 'Graduate', 'PhD', 'Self-Study'];
@@ -31,7 +31,7 @@ export default function StudentsPage() {
   return (
     <div className="p-6 space-y-6 max-w-6xl mx-auto">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-heading font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">🎓 Students</h1>
+        <h1 className="text-3xl font-heading font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">ðŸŽ“ Students</h1>
         <p className="text-gray-500 mt-1">Study guides, concept explanations, citations & summarization</p>
       </motion.div>
 
@@ -75,7 +75,7 @@ export default function StudentsPage() {
       </Card>
 
       {messages.length > 0 && (
-        <div className="space-y-3">{messages.map((msg, i) => <MessageBubble key={i} role={msg.role} content={msg.content} />)}</div>
+        <div className="space-y-3">{messages.map((msg, i) => <MessageBubble key={msg.id || i} message={msg} />)}</div>
       )}
     </div>
   );

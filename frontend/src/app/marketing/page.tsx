@@ -8,10 +8,10 @@ import { useChat } from '@/hooks/useChat';
 import MessageBubble from '@/components/chat/MessageBubble';
 
 const TOOLS = [
-  { id: 'campaign', name: 'Campaign Strategy', icon: '🎯', desc: 'Full marketing campaign plan' },
-  { id: 'seo', name: 'SEO Analysis', icon: '🔍', desc: 'Keyword research & optimization' },
-  { id: 'ab-test', name: 'A/B Testing', icon: '⚗️', desc: 'Design rigorous experiments' },
-  { id: 'persona', name: 'Customer Personas', icon: '👤', desc: 'Build detailed buyer personas' },
+  { id: 'campaign', name: 'Campaign Strategy', icon: 'ðŸŽ¯', desc: 'Full marketing campaign plan' },
+  { id: 'seo', name: 'SEO Analysis', icon: 'ðŸ”', desc: 'Keyword research & optimization' },
+  { id: 'ab-test', name: 'A/B Testing', icon: 'âš—ï¸', desc: 'Design rigorous experiments' },
+  { id: 'persona', name: 'Customer Personas', icon: 'ðŸ‘¤', desc: 'Build detailed buyer personas' },
 ];
 
 export default function MarketingPage() {
@@ -28,7 +28,7 @@ export default function MarketingPage() {
   return (
     <div className="p-6 space-y-6 max-w-6xl mx-auto">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-heading font-bold bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">📊 Marketing</h1>
+        <h1 className="text-3xl font-heading font-bold bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">ðŸ“Š Marketing</h1>
         <p className="text-gray-500 mt-1">Campaign strategy, SEO, A/B testing & customer personas</p>
       </motion.div>
 
@@ -60,7 +60,7 @@ export default function MarketingPage() {
       </Card>
 
       {messages.length > 0 && (
-        <div className="space-y-3">{messages.map((msg, i) => <MessageBubble key={i} role={msg.role} content={msg.content} />)}</div>
+        <div className="space-y-3">{messages.map((msg, i) => <MessageBubble key={msg.id || i} message={msg} />)}</div>
       )}
     </div>
   );

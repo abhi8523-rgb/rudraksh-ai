@@ -29,7 +29,7 @@ export function useChat(optionsOrEndpoint?: UseChatOptions | string) {
 
   const {
     endpoint = '/api/v1/llm/chat',
-    model = 'deepseek-r1:14b',
+    model = 'llama3.2:3b',
     module = 'chat',
     systemPrompt,
   } = options;

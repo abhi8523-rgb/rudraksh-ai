@@ -9,9 +9,9 @@ import MessageBubble from '@/components/chat/MessageBubble';
 import { API_BASE_URL } from '@/lib/constants';
 
 const TOOLS = [
-  { id: 'query', name: 'Deep Query (RAG)', icon: '🔎', desc: 'Query your uploaded documents' },
-  { id: 'hypothesis', name: 'Hypothesis Gen', icon: '🧪', desc: 'Generate research hypotheses' },
-  { id: 'review', name: 'Literature Review', icon: '📖', desc: 'Synthesize research papers' },
+  { id: 'query', name: 'Deep Query (RAG)', icon: 'ðŸ”Ž', desc: 'Query your uploaded documents' },
+  { id: 'hypothesis', name: 'Hypothesis Gen', icon: 'ðŸ§ª', desc: 'Generate research hypotheses' },
+  { id: 'review', name: 'Literature Review', icon: 'ðŸ“–', desc: 'Synthesize research papers' },
 ];
 
 export default function ResearchPage() {
@@ -54,7 +54,7 @@ export default function ResearchPage() {
   return (
     <div className="p-6 space-y-6 max-w-6xl mx-auto">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-heading font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">🔬 Research</h1>
+        <h1 className="text-3xl font-heading font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">ðŸ”¬ Research</h1>
         <p className="text-gray-500 mt-1">Deep RAG queries, hypothesis generation & literature reviews</p>
       </motion.div>
 
@@ -78,7 +78,7 @@ export default function ResearchPage() {
         <div onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}
           className="border-2 border-dashed border-white/[0.08] rounded-xl p-6 text-center hover:border-cyan-500/30 hover:bg-cyan-500/[0.02] transition-all cursor-pointer"
         >
-          <span className="text-3xl mb-2 block">📄</span>
+          <span className="text-3xl mb-2 block">ðŸ“„</span>
           <p className="text-sm text-gray-400">Drag & drop research papers here</p>
           <p className="text-xs text-gray-600 mt-1">Supports .pdf, .md, .txt</p>
         </div>
@@ -86,7 +86,7 @@ export default function ResearchPage() {
           <div className="mt-3 space-y-2">
             {files.map((f, i) => (
               <div key={i} className="flex items-center justify-between text-sm text-gray-400 bg-white/[0.03] rounded-lg px-3 py-2">
-                <span>📄 {f.name}</span>
+                <span>ðŸ“„ {f.name}</span>
                 <span className="text-xs text-gray-600">{(f.size / 1024).toFixed(1)} KB</span>
               </div>
             ))}
@@ -111,7 +111,7 @@ export default function ResearchPage() {
       </Card>
 
       {messages.length > 0 && (
-        <div className="space-y-3">{messages.map((msg, i) => <MessageBubble key={i} role={msg.role} content={msg.content} />)}</div>
+        <div className="space-y-3">{messages.map((msg, i) => <MessageBubble key={msg.id || i} message={msg} />)}</div>
       )}
     </div>
   );
