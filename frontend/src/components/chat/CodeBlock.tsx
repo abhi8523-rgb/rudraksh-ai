@@ -2,11 +2,9 @@
 
 import { useState, useCallback } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-/* ════════════════════════════════════════════════════════════════
-   CodeBlock — Syntax-highlighted code with copy & language label
-   ════════════════════════════════════════════════════════════════ */
+/* CodeBlock — Syntax-highlighted code with copy & language label */
 
 interface CodeBlockProps {
   code: string;
@@ -25,27 +23,27 @@ export default function CodeBlock({ code, language = 'text', showLineNumbers = t
   }, [code]);
 
   return (
-    <div className="relative group my-3 rounded-xl overflow-hidden border border-white/[0.06] bg-[#0d0d1a]">
+    <div className="relative group my-3 rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-2 bg-white/[0.02] border-b border-white/[0.06]">
-        <span className="text-[10px] font-mono font-medium text-gray-500 uppercase tracking-wider">
+      <div className="flex items-center justify-between px-4 py-2 bg-slate-100 border-b border-slate-200">
+        <span className="text-[10px] font-mono font-medium text-slate-500 uppercase tracking-wider">
           {language}
         </span>
         <button
           onClick={handleCopy}
           className="flex items-center gap-1.5 px-2.5 py-1 rounded-md
             text-[10px] font-medium
-            bg-white/[0.04] hover:bg-white/[0.08]
-            text-gray-500 hover:text-white
-            border border-white/[0.06] hover:border-white/[0.12]
+            bg-white hover:bg-slate-50
+            text-slate-500 hover:text-slate-700
+            border border-slate-200
             transition-all duration-200"
         >
           {copied ? (
             <>
-              <svg className="w-3 h-3 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-3 h-3 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              <span className="text-emerald-400">Copied!</span>
+              <span className="text-emerald-600">Copied!</span>
             </>
           ) : (
             <>
@@ -62,7 +60,7 @@ export default function CodeBlock({ code, language = 'text', showLineNumbers = t
       <div className="overflow-auto scrollbar-thin" style={{ maxHeight }}>
         <SyntaxHighlighter
           language={language}
-          style={oneDark}
+          style={oneLight}
           showLineNumbers={showLineNumbers}
           customStyle={{
             margin: 0,
@@ -72,14 +70,14 @@ export default function CodeBlock({ code, language = 'text', showLineNumbers = t
             lineHeight: '1.6',
           }}
           lineNumberStyle={{
-            color: 'rgba(255,255,255,0.15)',
+            color: '#94a3b8',
             fontSize: '0.7rem',
             paddingRight: '1rem',
             minWidth: '2.5em',
           }}
           codeTagProps={{
             style: {
-              fontFamily: 'var(--font-mono)',
+              fontFamily: 'var(--font-jetbrains), monospace',
             },
           }}
         >

@@ -28,7 +28,7 @@ export function useChat(optionsOrEndpoint?: UseChatOptions | string) {
       : optionsOrEndpoint || {};
 
   const {
-    endpoint = '/api/v1/llm/chat',
+    endpoint = '/api/chat',
     model = 'llama3.2:3b',
     module = 'chat',
     systemPrompt,

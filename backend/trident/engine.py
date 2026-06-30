@@ -51,7 +51,7 @@ class TridentEngine:
         self._planner = DAGPlanner()
         self._tools = TridentTools(self._sandbox)
         self._verifier = Verifier()
-        self._max_iterations = self._settings.Trident_max_iterations
+        self._max_iterations = self._settings.trident_max_iterations
         self._execution_log: list[dict] = []
         self._is_running = False
         self._should_stop = False

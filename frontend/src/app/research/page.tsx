@@ -1,49 +1,21 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import Card from '@/components/ui/Card';
-import Button from '@/components/ui/Button';
+import { useState } from 'react';
 import { useChat } from '@/hooks/useChat';
 import MessageBubble from '@/components/chat/MessageBubble';
 import { API_BASE_URL } from '@/lib/constants';
 
 const TOOLS = [
-  { id: 'query', name: 'Deep Query (RAG)', icon: 'ðŸ”Ž', desc: 'Query your uploaded documents' },
-  { id: 'hypothesis', name: 'Hypothesis Gen', icon: 'ðŸ§ª', desc: 'Generate research hypotheses' },
-  { id: 'review', name: 'Literature Review', icon: 'ðŸ“–', desc: 'Synthesize research papers' },
+  { id: 'query', name: 'RAG Query', desc: 'Ask questions from uploaded docs' },
+  { id: 'hypothesis', name: 'Hypotheses', desc: 'Generate research hypotheses' },
+  { id: 'review', name: 'Lit Review', desc: 'Synthesize literature reviews' },
 ];
 
 export default function ResearchPage() {
   const [activeTool, setActiveTool] = useState('query');
   const [input, setInput] = useState('');
-  const [files, setFiles] = useState<File[]>([]);
-  const [uploading, setUploading] = useState(false);
-  const { messages, isStreaming, sendMessage } = useChat('/api/research');
-
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    const droppedFiles = Array.from(e.dataTransfer.files).filter(
-      f => ['.pdf', '.md', '.txt'].some(ext => f.name.endsWith(ext))
-    );
-    setFiles(prev => [...prev, ...droppedFiles]);
-  }, []);
-
-  const handleUpload = async () => {
-    if (files.length === 0) return;
-    setUploading(true);
-    for (const file of files) {
-      const formData = new FormData();
-      formData.append('file', file);
-      try {
-        await fetch(`${API_BASE_URL}/api/memory/upload`, { method: 'POST', body: formData });
-      } catch (err) {
-        console.error('Upload error:', err);
-      }
-    }
-    setUploading(false);
-    setFiles([]);
-  };
+  const [uploadStatus, setUploadStatus] = useState('');
+  const { messages, isStreaming, sendMessage } = useChat('/api/chat');
 
   const handleSubmit = () => {
     if (!input.trim()) return;
@@ -51,67 +23,63 @@ export default function ResearchPage() {
     setInput('');
   };
 
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadStatus(`Uploading ${file.name}...`);
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+      await fetch(`${API_BASE_URL}/api/v1/memory/upload`, { method: 'POST', body: formData });
+      setUploadStatus(`${file.name} uploaded successfully`);
+    } catch {
+      setUploadStatus('Upload failed — is the backend running?');
+    }
+  };
+
   return (
-    <div className="p-6 space-y-6 max-w-6xl mx-auto">
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-heading font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">ðŸ”¬ Research</h1>
-        <p className="text-gray-500 mt-1">Deep RAG queries, hypothesis generation & literature reviews</p>
-      </motion.div>
+    <div className="p-6 space-y-6 max-w-5xl mx-auto overflow-y-auto h-full">
+      <div>
+        <h1 className="text-xl font-semibold text-slate-900">Research</h1>
+        <p className="text-slate-500 text-sm mt-1">RAG-powered deep research & analysis</p>
+      </div>
 
       <div className="grid grid-cols-3 gap-3">
         {TOOLS.map((tool) => (
-          <motion.button key={tool.id} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-            onClick={() => setActiveTool(tool.id)}
-            className={`p-4 rounded-2xl border transition-all text-left ${
-              activeTool === tool.id ? 'border-cyan-500/30 bg-cyan-500/10 shadow-[0_0_20px_rgba(6,182,212,0.15)]' : 'border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04]'
-            }`}
-          >
-            <span className="text-2xl">{tool.icon}</span>
-            <div className="mt-2 text-sm font-semibold text-white">{tool.name}</div>
-            <div className="text-xs text-gray-500">{tool.desc}</div>
-          </motion.button>
+          <button key={tool.id} onClick={() => setActiveTool(tool.id)}
+            className={`p-4 rounded-xl border transition-all text-left ${
+              activeTool === tool.id ? 'border-cyan-300 bg-cyan-50 shadow-sm' : 'border-slate-200 bg-white hover:bg-slate-50'
+            }`}>
+            <div className="text-sm font-medium text-slate-900">{tool.name}</div>
+            <div className="text-xs text-slate-500 mt-1">{tool.desc}</div>
+          </button>
         ))}
       </div>
 
-      {/* File Upload Zone */}
-      <Card className="p-5">
-        <div onDrop={handleDrop} onDragOver={(e) => e.preventDefault()}
-          className="border-2 border-dashed border-white/[0.08] rounded-xl p-6 text-center hover:border-cyan-500/30 hover:bg-cyan-500/[0.02] transition-all cursor-pointer"
-        >
-          <span className="text-3xl mb-2 block">ðŸ“„</span>
-          <p className="text-sm text-gray-400">Drag & drop research papers here</p>
-          <p className="text-xs text-gray-600 mt-1">Supports .pdf, .md, .txt</p>
-        </div>
-        {files.length > 0 && (
-          <div className="mt-3 space-y-2">
-            {files.map((f, i) => (
-              <div key={i} className="flex items-center justify-between text-sm text-gray-400 bg-white/[0.03] rounded-lg px-3 py-2">
-                <span>ðŸ“„ {f.name}</span>
-                <span className="text-xs text-gray-600">{(f.size / 1024).toFixed(1)} KB</span>
-              </div>
-            ))}
-            <Button onClick={handleUpload} disabled={uploading}>
-              {uploading ? 'Uploading...' : `Upload ${files.length} file(s)`}
-            </Button>
-          </div>
-        )}
-      </Card>
+      {/* Upload */}
+      <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+        <label className="text-xs text-slate-500 font-medium block mb-2">Upload Document (PDF, TXT, MD)</label>
+        <input type="file" accept=".pdf,.txt,.md,.csv" onChange={handleUpload}
+          className="text-sm text-slate-600 file:mr-3 file:px-3 file:py-1.5 file:rounded-lg file:border file:border-slate-200 file:bg-slate-50 file:text-sm file:text-slate-700 hover:file:bg-slate-100" />
+        {uploadStatus && <p className="text-xs text-slate-500 mt-2">{uploadStatus}</p>}
+      </div>
 
-      {/* Query Input */}
-      <Card className="p-5 space-y-4">
+      <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-4 shadow-sm">
         <textarea value={input} onChange={(e) => setInput(e.target.value)}
-          placeholder={activeTool === 'query' ? 'Ask a question about your uploaded documents...' : 'Describe your research area and observations...'}
-          rows={4} className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 text-sm text-white placeholder-gray-600 resize-none outline-none focus:border-cyan-500/30"
+          placeholder="Ask a research question..."
+          rows={4}
+          className="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm text-slate-900 placeholder-slate-400 resize-none outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
         />
         <div className="flex justify-end">
-          <Button onClick={handleSubmit} disabled={!input.trim() || isStreaming}>
+          <button onClick={handleSubmit} disabled={!input.trim() || isStreaming}
+            className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium disabled:opacity-40 hover:bg-blue-700 transition-colors shadow-sm">
             {isStreaming ? 'Researching...' : `Run ${TOOLS.find(t => t.id === activeTool)?.name}`}
-          </Button>
+          </button>
         </div>
-      </Card>
+      </div>
 
       {messages.length > 0 && (
-        <div className="space-y-3">{messages.map((msg, i) => <MessageBubble key={msg.id || i} message={msg} />)}</div>
+        <div className="space-y-1">{messages.map((msg, i) => <MessageBubble key={msg.id || i} message={msg} />)}</div>
       )}
     </div>
   );

@@ -162,19 +162,88 @@ app.include_router(research_router)
 app.include_router(trident_router)
 
 
-# ── Global Exception Handler ──────────────────────────────
+# ── Unauthenticated Chat (local-only) ─────────────────────
 
-@app.exception_handler(Exception)
-async def global_exception_handler(request: Request, exc: Exception):
-    """Catch unhandled exceptions and return a clean JSON response."""
-    return JSONResponse(
-        status_code=500,
-        content={
-            "error": "Internal server error",
-            "detail": str(exc),
-            "type": type(exc).__name__,
-        },
+from pydantic import BaseModel as _BaseModel, Field as _Field
+from typing import Optional as _Opt, Literal as _Lit, List as _List
+
+class _ChatMsg(_BaseModel):
+    role: _Lit["system", "user", "assistant"] = "user"
+    content: str
+
+class _ChatBody(_BaseModel):
+    messages: _List[_ChatMsg]
+    model: _Opt[str] = None
+    stream: bool = True
+    module: _Opt[str] = None
+    system_prompt: _Opt[str] = None
+    temperature: float = _Field(0.7, ge=0.0, le=2.0)
+
+CORE_SYSTEM_PROMPT = """You are Neel AI, a highly capable sovereign intelligence assistant running locally on the user's machine. Your responses must be expert-level, deeply reasoned, and immediately actionable.
+
+## Chain-of-Thought Reasoning Protocol
+For EVERY question, follow this internal process before answering:
+1. **Clarify** — Restate the core question in your own words to confirm understanding
+2. **Decompose** — Break the problem into sub-problems or key dimensions
+3. **Analyze** — Work through each sub-problem step by step, showing your reasoning
+4. **Synthesize** — Combine insights into a coherent, structured answer
+5. **Validate** — Check your answer for logical consistency and completeness
+
+## Response Quality Standards
+- Provide **specific, concrete answers** — never generic platitudes
+- Include **real examples, code snippets, or data** to illustrate points
+- Anticipate follow-up questions and address them proactively
+- When multiple approaches exist, compare trade-offs in a table
+- For technical topics, include working code with error handling
+- For strategic topics, include actionable next steps with timelines
+
+## Output Formatting (Mandatory)
+- Use **Markdown** with clear `## Headings` and `### Subheadings`
+- Use ``` language-tagged code blocks for all code (python, javascript, etc.)
+- Use **bold** for key terms on first introduction
+- Use numbered lists for sequential steps, bullet lists for unordered items
+- Use tables for comparisons: | Option | Pros | Cons |
+- Keep paragraphs short (2-4 sentences max) for readability
+
+## Constraints
+- Never fabricate facts, citations, URLs, or statistics
+- If uncertain, explicitly state your confidence level
+- Always specify language versions and library versions in code examples
+- Prioritize correctness over speed — take time to reason through complex problems"""
+
+
+@app.post("/api/chat", tags=["Chat"])
+async def local_chat(body: _ChatBody, request: Request):
+    """Unauthenticated chat endpoint for local use.
+    Streams responses from Ollama with an optimized system prompt."""
+    from llm.ollama_client import get_ollama_client
+    from llm.streaming import stream_sse_response
+    from config.settings import get_settings
+
+    settings = get_settings()
+    client = get_ollama_client()
+    model = body.model or settings.default_model
+
+    # Build messages with core system prompt
+    system = body.system_prompt or CORE_SYSTEM_PROMPT
+    messages = [{"role": "system", "content": system}]
+    messages += [{"role": m.role, "content": m.content} for m in body.messages]
+
+    if body.stream:
+        token_stream = client.chat_stream(
+            messages=messages,
+            model=model,
+            temperature=body.temperature,
+        )
+        return stream_sse_response(token_stream, request, provider="ollama")
+
+    result = await client.chat(
+        messages=messages,
+        model=model,
+        temperature=body.temperature,
     )
+    content = result.get("message", {}).get("content", "")
+    return JSONResponse(content={"content": content, "model": model, "done": True})
 
 
 # ── Root ───────────────────────────────────────────────────
@@ -188,3 +257,18 @@ async def root():
         "docs": "/docs",
         "health": "/api/health",
     }
+
+
+# ── Global Exception Handler ──────────────────────────────
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    """Catch unhandled exceptions and return a clean JSON response."""
+    return JSONResponse(
+        status_code=500,
+        content={
+            "error": "Internal server error",
+            "detail": str(exc),
+            "type": type(exc).__name__,
+        },
+    )

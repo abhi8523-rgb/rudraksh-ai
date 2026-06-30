@@ -242,7 +242,7 @@ async def get_runtime_config() -> dict[str, Any]:
         "jwt_secret_key": "***MASKED***",
         "jwt_access_token_expire_minutes": settings.jwt_access_token_expire_minutes,
         "max_upload_size_mb": settings.max_upload_size_mb,
-        "Trident_max_iterations": settings.Trident_max_iterations,
+        "trident_max_iterations": settings.trident_max_iterations,
         "Trident_sandbox_timeout": settings.Trident_sandbox_timeout,
     }
 

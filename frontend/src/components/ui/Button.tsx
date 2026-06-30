@@ -1,11 +1,8 @@
 'use client';
 
 import { forwardRef, type ButtonHTMLAttributes } from 'react';
-import { motion } from 'framer-motion';
 
-/* ════════════════════════════════════════════════════════════════
-   Button — Styled button with variants
-   ════════════════════════════════════════════════════════════════ */
+/* Button — Clean light theme */
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'success' | 'outline';
 type ButtonSize = 'sm' | 'md' | 'lg' | 'icon';
@@ -19,18 +16,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary:
-    'bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30',
-  secondary:
-    'bg-white/5 text-gray-300 hover:bg-white/10 hover:text-white border border-white/10 hover:border-white/20',
-  ghost:
-    'bg-transparent text-gray-400 hover:bg-white/5 hover:text-white',
-  danger:
-    'bg-gradient-to-r from-rose-500 to-red-500 text-white hover:from-rose-600 hover:to-red-600 shadow-lg shadow-rose-500/20',
-  success:
-    'bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 shadow-lg shadow-emerald-500/20',
-  outline:
-    'bg-transparent text-blue-400 border border-blue-500/30 hover:bg-blue-500/10 hover:border-blue-500/50',
+  primary: 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm',
+  secondary: 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200',
+  ghost: 'bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900',
+  danger: 'bg-red-600 text-white hover:bg-red-700 shadow-sm',
+  success: 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm',
+  outline: 'bg-transparent text-blue-600 border border-blue-300 hover:bg-blue-50',
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -43,15 +34,12 @@ const sizeClasses: Record<ButtonSize, string> = {
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = 'primary', size = 'md', isLoading, leftIcon, rightIcon, children, className = '', disabled, ...props }, ref) => {
     return (
-      <motion.button
+      <button
         ref={ref}
-        whileHover={{ scale: disabled ? 1 : 1.02 }}
-        whileTap={{ scale: disabled ? 1 : 0.98 }}
         className={`
           inline-flex items-center justify-center gap-2
-          font-medium rounded-lg
-          transition-all duration-200 ease-out
-          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a1a]
+          font-medium rounded-lg transition-all duration-150
+          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2
           disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none
           cursor-pointer
           ${variantClasses[variant]}
@@ -71,7 +59,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         {children}
         {rightIcon}
-      </motion.button>
+      </button>
     );
   }
 );

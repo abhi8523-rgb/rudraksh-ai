@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import { API_BASE_URL } from '@/lib/constants';
 
@@ -20,14 +18,9 @@ export default function SovereignPage() {
     return `${hours}h ${Math.floor(Math.random() * 60)}m`;
   });
 
-  // Simulated metrics for dashboard display
   const metrics = {
-    totalRequests: 1247,
-    todayRequests: 83,
-    avgLatency: '340ms',
-    tokensGenerated: '2.1M',
-    documentsIndexed: 156,
-    activeModels: 2,
+    totalRequests: 1247, todayRequests: 83, avgLatency: '340ms',
+    tokensGenerated: '2.1M', documentsIndexed: 156, activeModels: 2,
   };
 
   useEffect(() => {
@@ -36,110 +29,96 @@ export default function SovereignPage() {
         const res = await fetch(`${API_BASE_URL}/api/health`);
         const data = await res.json();
         setHealth(data);
-      } catch {
-        setHealth(null);
-      } finally {
-        setLoading(false);
-      }
+      } catch { setHealth(null); }
+      finally { setLoading(false); }
     };
     fetchHealth();
     const interval = setInterval(fetchHealth, 30000);
     return () => clearInterval(interval);
   }, []);
 
-  const StatCard = ({ label, value, icon, color }: { label: string; value: string | number; icon: string; color: string }) => (
-    <Card className="p-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-xs text-gray-500">{label}</p>
-          <p className={`text-2xl font-bold font-heading mt-1 bg-gradient-to-r ${color} bg-clip-text text-transparent`}>{value}</p>
-        </div>
-        <span className="text-3xl opacity-50">{icon}</span>
-      </div>
-    </Card>
+  const StatCard = ({ label, value }: { label: string; value: string | number }) => (
+    <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+      <p className="text-xs text-slate-500">{label}</p>
+      <p className="text-2xl font-semibold text-slate-900 mt-1">{value}</p>
+    </div>
   );
 
   return (
-    <div className="p-6 space-y-6 max-w-7xl mx-auto">
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-heading font-bold bg-gradient-to-r from-yellow-400 to-amber-400 bg-clip-text text-transparent">👑 Sovereign Dashboard</h1>
-            <p className="text-gray-500 mt-1">System administration & monitoring — abhi8523@gmail.com</p>
-          </div>
-          <Badge variant={health?.status === 'healthy' ? 'success' : 'error'}>
-            {health?.status === 'healthy' ? '● System Online' : '● Checking...'}
-          </Badge>
+    <div className="p-6 space-y-6 max-w-6xl mx-auto overflow-y-auto h-full">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-semibold text-slate-900">Sovereign Dashboard</h1>
+          <p className="text-slate-500 text-sm mt-1">System administration & monitoring — abhi8523@gmail.com</p>
         </div>
-      </motion.div>
+        <Badge variant={health?.status === 'healthy' ? 'online' : 'error'}>
+          {health?.status === 'healthy' ? 'System Online' : loading ? 'Checking...' : 'Offline'}
+        </Badge>
+      </div>
 
       {/* Service Status */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="p-4">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-white">Ollama (LLM)</span>
-            <Badge variant={health?.services?.ollama === 'connected' ? 'success' : 'error'}>
+            <span className="text-sm font-medium text-slate-900">Ollama (LLM)</span>
+            <Badge variant={health?.services?.ollama === 'connected' ? 'online' : 'error'}>
               {health?.services?.ollama || 'checking'}
             </Badge>
           </div>
-          <p className="text-xs text-gray-500">Model: {health?.config?.default_model || 'N/A'}</p>
-          <p className="text-xs text-gray-600">URL: {health?.config?.ollama_url || 'N/A'}</p>
-        </Card>
-        <Card className="p-4">
+          <p className="text-xs text-slate-500">Model: {health?.config?.default_model || 'N/A'}</p>
+          <p className="text-xs text-slate-400">URL: {health?.config?.ollama_url || 'N/A'}</p>
+        </div>
+        <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-white">ChromaDB (Memory)</span>
-            <Badge variant={health?.services?.chromadb === 'connected' ? 'success' : 'error'}>
+            <span className="text-sm font-medium text-slate-900">ChromaDB (Memory)</span>
+            <Badge variant={health?.services?.chromadb === 'connected' ? 'online' : 'error'}>
               {health?.services?.chromadb || 'checking'}
             </Badge>
           </div>
-          <p className="text-xs text-gray-500">Documents: {metrics.documentsIndexed}</p>
-          <p className="text-xs text-gray-600">Collections: 3 active</p>
-        </Card>
-        <Card className="p-4">
+          <p className="text-xs text-slate-500">Documents: {metrics.documentsIndexed}</p>
+          <p className="text-xs text-slate-400">Collections: 3 active</p>
+        </div>
+        <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-white">System</span>
-            <Badge variant="success">uptime: {uptime}</Badge>
+            <span className="text-sm font-medium text-slate-900">System</span>
+            <Badge variant="online">uptime: {uptime}</Badge>
           </div>
-          <p className="text-xs text-gray-500">Version: {health?.version || '1.0.0'}</p>
-          <p className="text-xs text-gray-600">Sovereign: {health?.sovereign || 'abhi8523@gmail.com'}</p>
-        </Card>
+          <p className="text-xs text-slate-500">Version: {health?.version || '1.0.0'}</p>
+          <p className="text-xs text-slate-400">Sovereign: {health?.sovereign || 'abhi8523@gmail.com'}</p>
+        </div>
       </div>
 
-      {/* Metrics Grid */}
+      {/* Metrics */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        <StatCard label="Total Requests" value={metrics.totalRequests} icon="📊" color="from-blue-400 to-indigo-400" />
-        <StatCard label="Today" value={metrics.todayRequests} icon="📈" color="from-emerald-400 to-teal-400" />
-        <StatCard label="Avg Latency" value={metrics.avgLatency} icon="⚡" color="from-amber-400 to-orange-400" />
-        <StatCard label="Tokens Generated" value={metrics.tokensGenerated} icon="🧠" color="from-violet-400 to-purple-400" />
-        <StatCard label="Documents" value={metrics.documentsIndexed} icon="📄" color="from-cyan-400 to-blue-400" />
-        <StatCard label="Active Models" value={metrics.activeModels} icon="🤖" color="from-pink-400 to-rose-400" />
+        <StatCard label="Total Requests" value={metrics.totalRequests} />
+        <StatCard label="Today" value={metrics.todayRequests} />
+        <StatCard label="Avg Latency" value={metrics.avgLatency} />
+        <StatCard label="Tokens Generated" value={metrics.tokensGenerated} />
+        <StatCard label="Documents" value={metrics.documentsIndexed} />
+        <StatCard label="Active Models" value={metrics.activeModels} />
       </div>
 
-      {/* Usage Chart (visual representation) */}
-      <Card className="p-5">
-        <h3 className="text-sm font-semibold text-white mb-4">Request Activity (Last 7 Days)</h3>
+      {/* Activity Chart */}
+      <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+        <h3 className="text-sm font-semibold text-slate-900 mb-4">Request Activity (Last 7 Days)</h3>
         <div className="flex items-end gap-2 h-32">
           {[45, 62, 38, 85, 53, 71, 83].map((val, i) => (
-            <motion.div key={i}
-              initial={{ height: 0 }}
-              animate={{ height: `${val}%` }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="flex-1 rounded-t-lg bg-gradient-to-t from-blue-500/20 to-indigo-500/40 relative group cursor-pointer"
-            >
-              <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">{val}</div>
-            </motion.div>
+            <div key={i} style={{ height: `${val}%` }}
+              className="flex-1 rounded-t-lg bg-blue-100 hover:bg-blue-200 transition-colors relative group cursor-pointer">
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-[10px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">{val}</div>
+            </div>
           ))}
         </div>
         <div className="flex justify-between mt-2">
           {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
-            <span key={d} className="text-[10px] text-gray-600 flex-1 text-center">{d}</span>
+            <span key={d} className="text-[10px] text-slate-400 flex-1 text-center">{d}</span>
           ))}
         </div>
-      </Card>
+      </div>
 
       {/* Audit Log */}
-      <Card className="p-5">
-        <h3 className="text-sm font-semibold text-white mb-3">Recent Audit Log</h3>
+      <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+        <h3 className="text-sm font-semibold text-slate-900 mb-3">Recent Audit Log</h3>
         <div className="space-y-2">
           {[
             { time: '2 min ago', event: 'Chat completion', user: 'sovereign', model: 'llama3.2:3b', status: 'success' },
@@ -148,25 +127,20 @@ export default function SovereignPage() {
             { time: '3 hours ago', event: 'System startup', user: 'system', model: 'N/A', status: 'success' },
             { time: '5 hours ago', event: 'Model pulled', user: 'sovereign', model: 'nomic-embed-text', status: 'success' },
           ].map((log, i) => (
-            <motion.div key={i}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.05 }}
-              className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] border border-white/[0.04] text-xs"
-            >
+            <div key={i} className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-100 text-xs">
               <div className="flex items-center gap-3">
                 <span className={`w-2 h-2 rounded-full ${log.status === 'success' || log.status === 'completed' ? 'bg-emerald-500' : 'bg-red-500'}`} />
-                <span className="text-gray-300">{log.event}</span>
-                <span className="text-gray-600">by {log.user}</span>
+                <span className="text-slate-700">{log.event}</span>
+                <span className="text-slate-400">by {log.user}</span>
               </div>
               <div className="flex items-center gap-3">
-                {log.model !== 'N/A' && <span className="text-gray-600 font-mono">{log.model}</span>}
-                <span className="text-gray-600">{log.time}</span>
+                {log.model !== 'N/A' && <span className="text-slate-500 font-mono">{log.model}</span>}
+                <span className="text-slate-400">{log.time}</span>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
-      </Card>
+      </div>
     </div>
   );
 }

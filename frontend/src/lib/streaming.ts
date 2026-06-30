@@ -36,6 +36,8 @@ export async function streamResponse(options: StreamOptions): Promise<void> {
     }
   }
 
+  let fullText = '';
+
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       method: 'POST',
@@ -60,7 +62,7 @@ export async function streamResponse(options: StreamOptions): Promise<void> {
 
     const decoder = new TextDecoder();
     let buffer = '';
-    let fullText = '';
+    fullText = '';
 
     while (true) {
       const { done, value } = await reader.read();
